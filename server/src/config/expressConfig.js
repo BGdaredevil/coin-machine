@@ -11,7 +11,7 @@ export default (app) => {
       origin: "http://localhost:3000",
       // methods: ["POST", "PUT", "GET", "OPTIONS", "HEAD"],
       credentials: true,
-    })
+    }),
   );
   app.use((req, res, next) => {
     res.header("Access-Control-allow-Credentials", true);

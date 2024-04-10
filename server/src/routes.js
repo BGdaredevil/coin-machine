@@ -15,7 +15,9 @@ router.use("/user", authController);
 router.use("/posts", postController);
 router.use("*", (req, res) => {
   console.log(req.body);
-  res.write("Hello i am restfull API -- please use my endpoints correctly -- /user; -- /posts");
+  res.write(
+    "Hello i am restfull API -- please use my endpoints correctly -- /user; -- /posts",
+  );
   res.end();
 });
 

@@ -17,10 +17,18 @@ export const cookie_name = config.cookie_name;
   expressConfig(app);
   dbConfig(app)
     .then((app) => {
-      console.log("\x1b[34m", `I think the DB is connected at ${config.dBaseUrl}`, "\x1b[0m");
+      console.log(
+        "\x1b[34m",
+        `I think the DB is connected at ${config.dBaseUrl}`,
+        "\x1b[0m",
+      );
       app.listen(
         config.appPort,
-        console.log("\x1b[34m", `Server is listening on port ${config.appPort}...`, "\x1b[0m")
+        console.log(
+          "\x1b[34m",
+          `Server is listening on port ${config.appPort}...`,
+          "\x1b[0m",
+        ),
       );
     })
     .catch((err) => {

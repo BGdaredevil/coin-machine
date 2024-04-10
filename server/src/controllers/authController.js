@@ -14,12 +14,16 @@ router.post("/register", async (req, res) => {
   };
 
   if (Object.values(cleanUser).includes("")) {
-    res.status(412).json({ type: "missing data", message: "pls fill all data" });
+    res
+      .status(412)
+      .json({ type: "missing data", message: "pls fill all data" });
     return;
   }
 
   if (cleanUser.password !== req.body.repeatPassword) {
-    res.status(412).json({ type: "pass mismatch", message: "passwords do not math" });
+    res
+      .status(412)
+      .json({ type: "pass mismatch", message: "passwords do not math" });
     return;
   }
 
@@ -46,12 +50,17 @@ router.post("/register", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   console.log(req.body);
-  const cleanData = { email: req.body.email.trim(), password: req.body.password.trim() };
+  const cleanData = {
+    email: req.body.email.trim(),
+    password: req.body.password.trim(),
+  };
 
   try {
     const user = await authService.login(cleanData);
     if (!user) {
-      res.status(412).json({ type: "user", message: "Invalid username or password" });
+      res
+        .status(412)
+        .json({ type: "user", message: "Invalid username or password" });
       return;
     }
     const token = await getToken(user);

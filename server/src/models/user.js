@@ -9,21 +9,30 @@ const UserSchema = new mongoose.Schema({
     required: true,
     minlength: [3, "First name is too short"],
     // unique: true,
-    validate: [/^[a-z]+$/i, "First name must be only letters. No special characters allowed."],
+    validate: [
+      /^[a-z]+$/i,
+      "First name must be only letters. No special characters allowed.",
+    ],
   },
   lastName: {
     type: String,
     required: true,
     minlength: [5, "Last name is too short"],
     // unique: true,
-    validate: [/^[a-z]+$/i, "Last name must be only letters. No special characters allowed."],
+    validate: [
+      /^[a-z]+$/i,
+      "Last name must be only letters. No special characters allowed.",
+    ],
   },
   email: {
     type: String,
     required: true,
     minlength: [5, "email is too short"],
     // unique: true,
-    validate: [/^\w+@{1}\w+\.{1}[a-z]{2,3}$/i, "Email must be valid to mailbox@domain.bg/com"],
+    validate: [
+      /^\w+@{1}\w+\.{1}[a-z]{2,3}$/i,
+      "Email must be valid to mailbox@domain.bg/com",
+    ],
   },
   password: {
     type: String,
