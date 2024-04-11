@@ -2,7 +2,7 @@ import { Router } from "express";
 const router = Router();
 
 import authController from "./controllers/authController.js";
-import postController from "./controllers/postController.js";
+// import postController from "./controllers/postController.js";
 
 // * debug
 router.use((req, res, next) => {
@@ -12,11 +12,11 @@ router.use((req, res, next) => {
 // * debug
 
 router.use("/user", authController);
-router.use("/posts", postController);
+// router.use("/posts", postController);
 router.use("*", (req, res) => {
   console.log(req.body);
   res.write(
-    "Hello i am restfull API -- please use my endpoints correctly -- /user; -- /posts",
+    "Hello i am restfull API -- please use my endpoints correctly -- /user; ",
   );
   res.end();
 });
