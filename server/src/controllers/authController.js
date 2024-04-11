@@ -1,11 +1,12 @@
 import { Router } from "express";
 import authService from "../services/authService.js";
 import getToken from "../utils/getToken.js";
-import { cookie_name, tokenExpDate } from "../server.js";
+import { cookie_name } from "../server.js";
+import AuthMiddleware from "../middlewares/authMiddleware.js";
 
 const router = Router();
 
-router.post("/register", async (req, res) => {
+router.post("/register", AuthMiddleware.isGuest, async (req, res) => {
     const cleanUser = {
         email: req.body.email.trim(),
         password: req.body.password.trim(),
@@ -33,6 +34,7 @@ router.post("/register", async (req, res) => {
         res.cookie(cookie_name, token, { httpOnly: true });
         res.status(200).json({ email: newUser.email, id: newUser._id });
     } catch (err) {
+        console.log(err);
         res.status(412).json({
             type: "validation",
             message: Object.keys(err?.errors)
@@ -42,7 +44,7 @@ router.post("/register", async (req, res) => {
     }
 });
 
-router.post("/login", async (req, res) => {
+router.post("/login", AuthMiddleware.isGuest, async (req, res) => {
     console.log(req.body);
     const cleanData = {
         email: req.body.email.trim(),
@@ -69,7 +71,7 @@ router.post("/login", async (req, res) => {
     }
 });
 
-router.get("/logout", (req, res) => {
+router.get("/logout", AuthMiddleware.isAuth, (req, res) => {
     console.log("called");
     res.clearCookie(cookie_name);
     res.status(200).end();

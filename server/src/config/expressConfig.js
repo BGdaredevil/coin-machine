@@ -2,6 +2,7 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import router from "../routes.js";
+import AuthMiddleware from "../middlewares/authMiddleware.js";
 
 export default (app) => {
     app.use(express.json());
@@ -17,5 +18,7 @@ export default (app) => {
     //     res.header("Access-Control-allow-Credentials", true);
     //     next();
     // });
+    app.use(AuthMiddleware.auth);
+
     app.use(router);
 };

@@ -1,6 +1,6 @@
 // todo read cookies instead
 
-const user = localStorage.getItem(process.env.REACT_APP_TOKEN_LOCAL_STORAGE!);
+const user = localStorage.getItem(import.meta.env.VITE_TOKEN_LOCAL_STORAGE!);
 
 const fetchWrap = async (url: RequestInfo | URL, options: RequestInit) => {
     try {
