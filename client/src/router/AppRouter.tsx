@@ -1,17 +1,10 @@
-import { Outlet, Route, createBrowserRouter, createRoutesFromChildren } from "react-router-dom";
+import { Route, createBrowserRouter, createRoutesFromChildren } from "react-router-dom";
 import { PrivateRoutes, PublicRoutes } from "../config/appEnums";
+import MainLayout from "../layouts/MainLayout";
 
 const router = createBrowserRouter(
     createRoutesFromChildren(
-        <Route
-            path={PublicRoutes.BASE_PATH}
-            element={
-                <>
-                    main
-                    <Outlet />
-                </>
-            }
-        >
+        <Route path={PublicRoutes.BASE_PATH} element={<MainLayout />}>
             <Route index element={<div>pesho home // outlet comes here ... i.e. this is the layout</div>} />
             <Route path={PublicRoutes.LOGIN} element={<div>pesho home</div>} />
             <Route path={PublicRoutes.REGISTER} element={<div>pesho home REGISTER</div>} />
