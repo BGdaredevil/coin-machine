@@ -12,8 +12,6 @@ const MainLayout: FC<MainLayoutProps> = () => {
                 maxWidth: "1200px",
                 margin: "0 auto",
                 padding: "20px",
-                // width: "100%",
-                // height: "100%",
             }}
         >
             <div

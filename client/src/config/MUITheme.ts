@@ -1,7 +1,9 @@
-import { ThemeOptions, createTheme } from "@mui/material";
+import { ThemeOptions } from "@mui/material";
 
-const themeConfig: ThemeOptions = {};
+const themeConfig: ThemeOptions = {
+    palette: {
+        mode: "dark",
+    },
+};
 
-const theme = createTheme(themeConfig);
-
-export default theme;
+export default themeConfig;

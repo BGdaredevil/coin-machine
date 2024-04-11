@@ -1,12 +1,16 @@
-import { ReactNode } from "react";
+import { ReactNode, useMemo } from "react";
 import { RouterProvider } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import { ThemeProvider } from "@mui/material";
+import { ThemeProvider, createTheme } from "@mui/material";
 import router from "./router/AppRouter";
-import theme from "./config/MUITheme";
+import themeConfig from "./config/MUITheme";
 import "./App.css";
 
 function App(): ReactNode {
+    const theme = useMemo(() => {
+        return createTheme(themeConfig);
+    }, []);
+
     return (
         <>
             <ThemeProvider theme={theme}>
