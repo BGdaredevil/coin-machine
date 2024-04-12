@@ -1,8 +1,9 @@
-import { FC, useReducer, useState } from "react";
+import { FC, FormEvent, useReducer, useState } from "react";
 import { Box, Button, IconButton, TextField } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { IAction, IForm } from "./types";
+import { loginUser } from "../../../services/authService";
 
 const formReducer = (state: IForm, action: IAction): IForm => {
     switch (action.type) {
@@ -44,9 +45,20 @@ const Login: FC = () => {
 
     const [showPass, setShowPass] = useState(false);
 
+    const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
+        loginUser({
+            email: form.email.value,
+            password: form.password.value,
+        }).then((res) => {
+            console.log(res);
+        });
+    };
+
     return (
         <div>
-            <Box component="form" onSubmit={(e) => e.preventDefault()} noValidate autoComplete="off" maxWidth={"500px"} margin={"0 auto"}>
+            <Box component="form" onSubmit={onSubmit} noValidate autoComplete="off" maxWidth={"500px"} margin={"0 auto"}>
                 <TextField
                     value={form.email.value}
                     error={form.email.error}

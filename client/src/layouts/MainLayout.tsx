@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import { PrivateRoutes, PublicRoutes } from "../config/appEnums";
+import { serverLogout } from "../services/authService";
 
 interface MainLayoutProps {}
 
@@ -20,7 +21,7 @@ const MainLayout: FC<MainLayoutProps> = () => {
                     flexDirection: "row",
                     alignItems: "center",
                     gap: "20px",
-                    marginBottom: "20px"
+                    marginBottom: "20px",
                 }}
             >
                 <NavLink to={PublicRoutes.BASE_PATH}>
@@ -34,6 +35,9 @@ const MainLayout: FC<MainLayoutProps> = () => {
                 </NavLink>
                 <NavLink to={PrivateRoutes.ADMIN}>
                     <p style={{ margin: 0 }}>admin</p>
+                </NavLink>
+                <NavLink to={PublicRoutes.BASE_PATH} onClick={serverLogout}>
+                    <p style={{ margin: 0 }}>logout</p>
                 </NavLink>
             </div>
             <Outlet />

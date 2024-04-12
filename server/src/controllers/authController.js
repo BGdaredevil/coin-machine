@@ -72,9 +72,8 @@ router.post("/login", AuthMiddleware.isGuest, async (req, res) => {
 });
 
 router.get("/logout", AuthMiddleware.isAuth, (req, res) => {
-    console.log("called");
     res.clearCookie(cookie_name);
-    res.status(200).end();
+    res.status(200).json({ type: "message", message: "sucess" });
     return;
 });
 

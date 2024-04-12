@@ -1,5 +1,4 @@
 import express from "express";
-
 import baseConfig from "./config/config.js";
 import expressConfig from "./config/expressConfig.js";
 import dbConfig from "./config/dbConfig.js";

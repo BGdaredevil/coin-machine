@@ -11,6 +11,7 @@ const fetchWrap = async (url: RequestInfo | URL, options: RequestInit) => {
         }
 
         try {
+            // return res.text().then((str) => (str ? JSON.parse(str) : {})); // fix empty response
             return res.json();
         } catch (error) {
             console.log("fetchWrap error says: ", error);
@@ -21,7 +22,7 @@ const fetchWrap = async (url: RequestInfo | URL, options: RequestInit) => {
     }
 };
 
-const getOptions = (method: RequestInit["method"] = "get", payload: object = {}) => {
+const getOptions = (method: RequestInit["method"] = "get", payload?: object) => {
     const options: RequestInit = { method: method.toUpperCase(), credentials: "include" };
     const headers = new Headers();
 
