@@ -2,6 +2,7 @@ import { Router } from "express";
 const router = Router();
 
 import authController from "./controllers/authController.js";
+import productController from "./controllers/productController.js";
 // import postController from "./controllers/postController.js";
 
 // * debug
@@ -12,6 +13,7 @@ router.use((req, res, next) => {
 // * debug
 
 router.use("/user", authController);
+router.use("/product", productController);
 // router.use("/posts", postController);
 router.use("*", (req, res) => {
     console.log(req.body);
