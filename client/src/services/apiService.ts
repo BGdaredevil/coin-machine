@@ -22,8 +22,8 @@ const fetchWrap = async (url: RequestInfo | URL, options: RequestInit) => {
     }
 };
 
-const getOptions = (method: RequestInit["method"] = "get", payload?: object) => {
-    const options: RequestInit = { method: method.toUpperCase(), credentials: "include" };
+const getOptions = (config: RequestInit, method: RequestInit["method"] = "get", payload?: object) => {
+    const options: RequestInit = { method: method.toUpperCase(), credentials: "include", ...config };
     const headers = new Headers();
 
     if (user) {
@@ -41,11 +41,11 @@ const getOptions = (method: RequestInit["method"] = "get", payload?: object) => 
 };
 
 const ApiService = {
-    get: (url: RequestInfo | URL) => fetchWrap(url, getOptions()),
-    post: (url: RequestInfo | URL, data: object) => fetchWrap(url, getOptions("post", data)),
-    put: (url: RequestInfo | URL, data: object) => fetchWrap(url, getOptions("put", data)),
-    del: (url: RequestInfo | URL) => fetchWrap(url, getOptions("delete")),
-    patch: (url: RequestInfo | URL, data: object) => fetchWrap(url, getOptions("patch", data)),
+    get: (url: RequestInfo | URL, config: RequestInit = {}) => fetchWrap(url, getOptions(config)),
+    post: (url: RequestInfo | URL, data: object, config: RequestInit = {}) => fetchWrap(url, getOptions(config, "post", data)),
+    put: (url: RequestInfo | URL, data: object, config: RequestInit = {}) => fetchWrap(url, getOptions(config, "put", data)),
+    del: (url: RequestInfo | URL, config: RequestInit = {}) => fetchWrap(url, getOptions(config, "delete")),
+    patch: (url: RequestInfo | URL, data: object, config: RequestInit = {}) => fetchWrap(url, getOptions(config, "patch", data)),
 };
 
 export default ApiService;
