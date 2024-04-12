@@ -1,9 +1,11 @@
-import { Box, Button, IconButton, InputAdornment, TextField } from "@mui/material";
+import { Box, Button, IconButton, TextField } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { FC, FormEvent, useReducer, useState } from "react";
+import { FC, FormEvent, useContext, useReducer, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { IAction, IForm } from "./types";
-import { registerUser } from "../../../services/authService";
+import { AuthContext } from "../../../contexts/Auth";
+import { PublicRoutes } from "../../../config/appEnums";
 
 const formReducer = (state: IForm, action: IAction): IForm => {
     switch (action.type) {
@@ -55,6 +57,10 @@ const initialForm = {
 };
 
 const Register: FC = () => {
+    const navigate = useNavigate();
+
+    const { register } = useContext(AuthContext);
+
     const [form, dispatchForm] = useReducer(formReducer, initialForm);
 
     const [showPass, setShowPass] = useState(false);
@@ -62,13 +68,11 @@ const Register: FC = () => {
     const onSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        registerUser({
+        register({
             email: form.email.value,
             password: form.password.value,
             repeatPassword: form.repeatPassword.value,
-        }).then((res) => {
-            console.log(res);
-        });
+        }).then(() => navigate(`${PublicRoutes.BASE_PATH}`));
     };
 
     return (

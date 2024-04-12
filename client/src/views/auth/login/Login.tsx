@@ -1,9 +1,11 @@
-import { FC, FormEvent, useReducer, useState } from "react";
+import { FC, FormEvent, useContext, useReducer, useState } from "react";
 import { Box, Button, IconButton, TextField } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { IAction, IForm } from "./types";
-import { loginUser } from "../../../services/authService";
+import { AuthContext } from "../../../contexts/Auth";
+import { useNavigate } from "react-router-dom";
+import { PublicRoutes } from "../../../config/appEnums";
 
 const formReducer = (state: IForm, action: IAction): IForm => {
     switch (action.type) {
@@ -41,19 +43,17 @@ const initialForm = {
 };
 
 const Login: FC = () => {
+    const navigate = useNavigate();
+
+    const { login } = useContext(AuthContext);
+
     const [form, dispatchForm] = useReducer(formReducer, initialForm);
 
     const [showPass, setShowPass] = useState(false);
 
     const onSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-
-        loginUser({
-            email: form.email.value,
-            password: form.password.value,
-        }).then((res) => {
-            console.log(res);
-        });
+        login({ email: form.email.value, password: form.password.value }).then(() => navigate(`${PublicRoutes.BASE_PATH}`));
     };
 
     return (
