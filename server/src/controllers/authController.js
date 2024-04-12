@@ -77,6 +77,19 @@ router.get("/logout", AuthMiddleware.isAuth, (req, res) => {
     return;
 });
 
+router.get("/:id", AuthMiddleware.isAuth, async (req, res) => {
+    try {
+        if (req.user.id !== req.params.id) {
+            throw new Errror("user tries to access another");
+        }
+
+        const person = await authService.getUser(req.params.id);
+        res.status(200).json({ email: person.email, id: person._id });
+    } catch (err) {
+        res.status(412).json({ type: "wrong-data", message: "invalid data" });
+    }
+});
+
 // router.get("/:id", (req, res) => {
 //     console.log(req.params.id);
 //     res.write("your profile page is loading");
