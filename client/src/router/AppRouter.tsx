@@ -23,10 +23,18 @@ const router = createBrowserRouter(
                     index
                     element={
                         <>
-                            <div>pesho home index // outlet comes here ... i.e. this is the layout</div>
+                            <div>personal products catalog</div>
                         </>
                     }
                 />
+                <Route path={`${PrivateRoutes.ADMIN}${PrivateRoutes.PRODUCT}`}>
+                    <Route index element={<div>list personal products</div>} />
+                    <Route path={`${PrivateRoutes.ADMIN}${PrivateRoutes.PRODUCT}${PrivateRoutes.EDIT}`} element={<div>edit product</div>} />
+                    <Route
+                        path={`${PrivateRoutes.ADMIN}${PrivateRoutes.PRODUCT}${PrivateRoutes.CREATE}`}
+                        element={<div>create product</div>}
+                    />
+                </Route>
                 <Route path={"pesho"} element={<div>pesho home</div>} />
                 <Route path={"pesho2"} element={<div>pesho home2</div>} />
             </Route>

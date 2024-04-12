@@ -3,6 +3,10 @@ enum Routes {
     LOGIN = "/login",
     REGISTER = "/register",
     ADMIN = "/admin",
+    PRODUCT = "/product",
+    CREATE = "/create",
+    EDIT = "/edit/:id",
+    ID = "/:id",
 }
 
 export enum PublicRoutes {
@@ -13,4 +17,7 @@ export enum PublicRoutes {
 
 export enum PrivateRoutes {
     ADMIN = Routes.ADMIN,
+    PRODUCT = Routes.PRODUCT,
+    CREATE = Routes.CREATE,
+    EDIT = Routes.EDIT,
 }
