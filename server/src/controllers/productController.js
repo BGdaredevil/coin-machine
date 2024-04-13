@@ -39,8 +39,8 @@ const create = async (req, res) => {
         name: req.body.name.trim(),
         description: req.body.description.trim(),
         imageUrl: req.body.imageUrl.trim(),
-        price: req.body.price.trim(),
-        inventoryCount: req.body.inventoryCount.trim(),
+        price: req.body.price,
+        inventoryCount: req.body.inventoryCount,
         owner: req.user.id,
     };
 
@@ -101,8 +101,8 @@ const edit = async (req, res) => {
         name: req.body.name.trim(),
         description: req.body.description.trim(),
         imageUrl: req.body.imageUrl.trim(),
-        price: req.body.price.trim(),
-        inventoryCount: req.body.inventoryCount.trim(),
+        price: req.body.price,
+        inventoryCount: req.body.inventoryCount,
         owner: req.user.id,
     };
 
