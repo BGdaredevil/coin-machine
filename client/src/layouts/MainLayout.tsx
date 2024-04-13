@@ -34,14 +34,17 @@ const MainLayout: FC<MainLayoutProps> = () => {
                 </NavLink>
                 {isAuth ? (
                     <>
-                        <NavLink to={PrivateRoutes.ADMIN}>
-                            <p style={{ margin: 0 }}>admin</p>
-                        </NavLink>
-                        <NavLink to={`${PrivateRoutes.ADMIN}${PrivateRoutes.PRODUCT}`}>
+                        <NavLink to={`${PrivateRoutes.PRODUCT}`}>
                             <p style={{ margin: 0 }}>my products</p>
                         </NavLink>
-                        <NavLink to={`${PrivateRoutes.ADMIN}${PrivateRoutes.PRODUCT}${PrivateRoutes.CREATE}`}>
+                        <NavLink to={`${PrivateRoutes.PRODUCT}${PrivateRoutes.CREATE}`}>
                             <p style={{ margin: 0 }}>add product</p>
+                        </NavLink>
+                        <NavLink to={`${PrivateRoutes.MACHINE}`}>
+                            <p style={{ margin: 0 }}>my machines</p>
+                        </NavLink>
+                        <NavLink to={`${PrivateRoutes.MACHINE}${PrivateRoutes.CREATE}`}>
+                            <p style={{ margin: 0 }}>add machine</p>
                         </NavLink>
                         <NavLink to={PublicRoutes.BASE_PATH} onClick={logout}>
                             <p style={{ margin: 0 }}>logout</p>

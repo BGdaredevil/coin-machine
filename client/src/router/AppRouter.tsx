@@ -8,6 +8,8 @@ import PersonalProductsCatalog from "../views/product/catalog/PersonalProductsCa
 import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./PublicRoute";
 import AuthListener from "./AuthListener";
+import MachineHome from "../views/machine/MachineHome";
+import CreateMachine from "../views/machine/create/CreateMachine";
 
 const router = createBrowserRouter(
     createRoutesFromChildren(
@@ -19,24 +21,21 @@ const router = createBrowserRouter(
                 </AuthListener>
             }
         >
-            <Route index element={<div>pesho home // outlet comes here ... i.e. this is the layout</div>} />
+            <Route index element={<MachineHome />} />
             <Route path="" element={<PublicRoute />}>
                 <Route path={PublicRoutes.LOGIN} element={<Login />} />
                 <Route path={PublicRoutes.REGISTER} element={<Register />} />
             </Route>
-            <Route path={PrivateRoutes.ADMIN} element={<PrivateRoute />}>
-                <Route
-                    index
-                    element={
-                        <>
-                            <div>personal products catalog</div>
-                        </>
-                    }
-                />
-                <Route path={`${PrivateRoutes.ADMIN}${PrivateRoutes.PRODUCT}`}>
+            <Route path="" element={<PrivateRoute />}>
+                <Route path={`${PrivateRoutes.PRODUCT}`}>
                     <Route index element={<PersonalProductsCatalog />} />
-                    <Route path={`${PrivateRoutes.ADMIN}${PrivateRoutes.PRODUCT}${PrivateRoutes.EDIT}`} element={<div>edit product</div>} />
-                    <Route path={`${PrivateRoutes.ADMIN}${PrivateRoutes.PRODUCT}${PrivateRoutes.CREATE}`} element={<CreateProduct />} />
+                    {/* <Route path={`${PrivateRoutes.ADMIN}${PrivateRoutes.PRODUCT}${PrivateRoutes.EDIT}`} element={<div>edit product</div>} /> */}
+                    <Route path={`${PrivateRoutes.PRODUCT}${PrivateRoutes.CREATE}`} element={<CreateProduct />} />
+                </Route>
+                <Route path={`${PrivateRoutes.MACHINE}`}>
+                    <Route index element={<div>my machines</div>} />
+                    {/* <Route path={`${PrivateRoutes.ADMIN}${PrivateRoutes.MACHINE}${PrivateRoutes.EDIT}`} element={<div>edit machine</div>} /> */}
+                    <Route path={`${PrivateRoutes.MACHINE}${PrivateRoutes.CREATE}`} element={<CreateMachine />} />
                 </Route>
                 <Route path={"pesho"} element={<div>pesho home</div>} />
                 <Route path={"pesho2"} element={<div>pesho home2</div>} />
