@@ -1,12 +1,16 @@
-import { IFormField } from "../../../utils/commonTypes";
+import { IFormField, IProuduct } from "../../utils/commonTypes";
 
-export enum Actions {
+enum Actions {
     NAME = "name",
     DESCRIPTION = "description",
     IMAGE_URL = "imageUrl",
     PRICE = "price",
     INVENTORY_COUNT = "inventoryCount",
-    VALIDATE = "validate",
+    VALIDATE_FIELD = "validateField",
+}
+
+enum SpecialActions {
+    VALIDATE_ALL = "validateAll",
     RESET = "reset",
 }
 
@@ -18,7 +22,14 @@ export interface IForm {
     inventoryCount: IFormField<number>;
 }
 
-export interface IAction {
+interface ISimpleAction {
     type: `${Actions}`;
     payload?: string;
 }
+
+interface IResetAction {
+    type: `${SpecialActions}`;
+    payload?: IProuduct;
+}
+
+export type IAction = ISimpleAction | IResetAction;

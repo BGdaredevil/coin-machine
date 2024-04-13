@@ -32,7 +32,7 @@ const MainLayout: FC<MainLayoutProps> = () => {
                 <NavLink to={PublicRoutes.BASE_PATH}>
                     <p style={{ margin: 0 }}>home</p>
                 </NavLink>
-                {isAuth() ? (
+                {isAuth ? (
                     <>
                         <NavLink to={PrivateRoutes.ADMIN}>
                             <p style={{ margin: 0 }}>admin</p>

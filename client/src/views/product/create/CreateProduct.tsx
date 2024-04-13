@@ -1,134 +1,22 @@
 import { useNavigate } from "react-router-dom";
 import { Box, Button, TextField } from "@mui/material";
 import { FC, FormEventHandler, useEffect, useReducer, useState } from "react";
-import { IAction, IForm } from "./types";
-import validators from "../../../utils/validators";
 import { createProduct } from "../../../services/productService";
 import { PrivateRoutes } from "../../../config/appEnums";
 import { toastError } from "../../../utils/toast";
-import { URL_PATTERN } from "../../../utils/validatorConstants";
+import ProductFormReducer from "../utils/ProductFormReducer";
 
 interface CreateProductProps {}
-
-const initialForm: IForm = {
-    name: {
-        value: "",
-        error: false,
-        touched: false,
-        errorMessage: "",
-    },
-    description: {
-        value: "",
-        error: false,
-        touched: false,
-        errorMessage: "",
-    },
-    imageUrl: {
-        value: "",
-        error: false,
-        touched: false,
-        errorMessage: "",
-    },
-    inventoryCount: {
-        value: 0,
-        error: false,
-        touched: false,
-        errorMessage: "",
-    },
-    price: {
-        value: 0,
-        error: false,
-        touched: false,
-        errorMessage: "",
-    },
-};
-
-const formReducer = (state: IForm, action: IAction): IForm => {
-    switch (action.type) {
-        case "name": {
-            const nextFieldState: IForm["name"] = { ...state.name, error: false, errorMessage: "" };
-
-            nextFieldState.value = action.payload!;
-
-            return { ...state, name: nextFieldState };
-        }
-
-        case "description": {
-            const nextFieldState: IForm["description"] = { ...state.description, error: false, errorMessage: "" };
-
-            nextFieldState.value = action.payload!;
-
-            return { ...state, description: nextFieldState };
-        }
-
-        case "imageUrl": {
-            const nextFieldState: IForm["imageUrl"] = { ...state.imageUrl, error: false, errorMessage: "" };
-
-            nextFieldState.value = action.payload!;
-
-            return { ...state, imageUrl: nextFieldState };
-        }
-
-        case "price": {
-            const nextFieldState: IForm["price"] = { ...state.price, error: false, errorMessage: "" };
-
-            nextFieldState.value = Number(action.payload!);
-
-            return { ...state, price: nextFieldState };
-        }
-
-        case "inventoryCount": {
-            const nextFieldState: IForm["inventoryCount"] = { ...state.inventoryCount, error: false, errorMessage: "" };
-
-            nextFieldState.value = Number(action.payload!);
-
-            return { ...state, inventoryCount: nextFieldState };
-        }
-
-        case "validate": {
-            const nextState = { ...state };
-
-            validators.required(nextState.name, "Name is required");
-            validators.minLength(nextState.name, "Name is too short", 2);
-            validators.required(nextState.description, "Description is required");
-            validators.minLength(nextState.description, "Description is too short", 10);
-            validators.required(nextState.imageUrl, "Image URL is required");
-            validators.isNotPattern(nextState.imageUrl, "Please enter a valid URL", URL_PATTERN);
-            validators.required(nextState.price, "Price is required");
-            validators.min(nextState.price, "Price should be a positive number", 0);
-            validators.required(nextState.inventoryCount, "Inventory Count is required");
-            validators.min(nextState.inventoryCount, "Inventory Count should be a positive number", 0);
-
-            return nextState;
-        }
-
-        case "reset": {
-            const blankStrField = { value: "", error: false, touched: false, errorMessage: "" };
-            const blankNumberField = { value: 0, error: false, touched: false, errorMessage: "" };
-
-            return {
-                description: { ...blankStrField },
-                imageUrl: { ...blankStrField },
-                inventoryCount: { ...blankNumberField },
-                name: { ...blankStrField },
-                price: { ...blankNumberField },
-            };
-        }
-
-        default:
-            return state;
-    }
-};
 
 const CreateProduct: FC<CreateProductProps> = () => {
     const navigate = useNavigate();
 
-    const [form, dispatchForm] = useReducer(formReducer, initialForm);
+    const [form, dispatchForm] = useReducer(ProductFormReducer.formReducer, ProductFormReducer.getInitForm());
     const [submitting, setSubmitting] = useState<boolean>(false);
 
     const onSubmit: FormEventHandler<HTMLFormElement> = (e) => {
         e.preventDefault();
-        dispatchForm({ type: "validate" });
+        dispatchForm({ type: "validateAll" });
         setSubmitting(true);
     };
 
@@ -151,8 +39,12 @@ const CreateProduct: FC<CreateProductProps> = () => {
             name: form.name.value,
             price: form.price.value,
         })
-            .then(() => navigate(`${PrivateRoutes.ADMIN}${PrivateRoutes.PRODUCT}`))
+            .then(() => {
+                setSubmitting(false);
+                navigate(`${PrivateRoutes.ADMIN}${PrivateRoutes.PRODUCT}`);
+            })
             .catch(() => {
+                setSubmitting(false);
                 dispatchForm({ type: "reset" });
                 toastError("something went wrong");
             });
@@ -165,7 +57,7 @@ const CreateProduct: FC<CreateProductProps> = () => {
                 error={form.name.error}
                 helperText={form.name.errorMessage}
                 onChange={(e) => dispatchForm({ payload: e.target.value, type: "name" })}
-                onBlur={() => dispatchForm({ type: "validate" })}
+                onBlur={() => dispatchForm({ type: "validateField", payload: "name" })}
                 variant="standard"
                 color="secondary"
                 id="name-input"
@@ -179,7 +71,7 @@ const CreateProduct: FC<CreateProductProps> = () => {
                 error={form.description.error}
                 helperText={form.description.errorMessage}
                 onChange={(e) => dispatchForm({ payload: e.target.value, type: "description" })}
-                onBlur={() => dispatchForm({ type: "validate" })}
+                onBlur={() => dispatchForm({ type: "validateField", payload: "description" })}
                 variant="standard"
                 color="secondary"
                 id="description-input"
@@ -193,7 +85,7 @@ const CreateProduct: FC<CreateProductProps> = () => {
                 error={form.imageUrl.error}
                 helperText={form.imageUrl.errorMessage}
                 onChange={(e) => dispatchForm({ payload: e.target.value, type: "imageUrl" })}
-                onBlur={() => dispatchForm({ type: "validate" })}
+                onBlur={() => dispatchForm({ type: "validateField", payload: "imageUrl" })}
                 variant="standard"
                 color="secondary"
                 id="image-input"
@@ -207,7 +99,7 @@ const CreateProduct: FC<CreateProductProps> = () => {
                 error={form.inventoryCount.error}
                 helperText={form.inventoryCount.errorMessage}
                 onChange={(e) => dispatchForm({ payload: e.target.value, type: "inventoryCount" })}
-                onBlur={() => dispatchForm({ type: "validate" })}
+                onBlur={() => dispatchForm({ type: "validateField", payload: "inventoryCount" })}
                 variant="standard"
                 color="secondary"
                 id="inventory-count-input"
@@ -222,7 +114,7 @@ const CreateProduct: FC<CreateProductProps> = () => {
                 error={form.price.error}
                 helperText={form.price.errorMessage}
                 onChange={(e) => dispatchForm({ payload: e.target.value, type: "price" })}
-                onBlur={() => dispatchForm({ type: "validate" })}
+                onBlur={() => dispatchForm({ type: "validateField", payload: "price" })}
                 variant="standard"
                 color="secondary"
                 id="price-input"

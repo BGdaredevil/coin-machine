@@ -15,7 +15,7 @@ interface IAuthContext {
     login: (data: Omit<IUserDto, "repeatPassword">) => Promise<void>;
     logout: () => Promise<void>;
     register: (data: IUserDto) => Promise<void>;
-    isAuth: () => boolean;
+    isAuth: boolean;
 }
 
 const AUTH_COOKIE_KEY = "my-id";
@@ -25,7 +25,7 @@ export const AuthContext = createContext<IAuthContext>({
     login: () => Promise.resolve(undefined),
     logout: () => Promise.resolve(undefined),
     register: () => Promise.resolve(undefined),
-    isAuth: () => false,
+    isAuth: false,
 });
 
 const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
@@ -69,17 +69,13 @@ const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
         }
     };
 
-    const isAuth = () => {
-        return Boolean(user);
-    };
-
     const authContextValue = useMemo(
         () => ({
             user,
             login,
             logout,
             register,
-            isAuth,
+            isAuth: Boolean(user),
         }),
         [user]
     );
@@ -96,7 +92,11 @@ const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
                         email: personData.email,
                     })
                 )
-                .catch(isCancelledErrorProcessor);
+                .catch(isCancelledErrorProcessor)
+                .catch(() => {
+                    setUser(null);
+                    cookies.remove(AUTH_COOKIE_KEY);
+                });
 
             return () => controller.abort();
         }

@@ -4,6 +4,7 @@ import MainLayout from "../layouts/MainLayout";
 import Register from "../views/auth/register/Register";
 import Login from "../views/auth/login/Login";
 import CreateProduct from "../views/product/create/CreateProduct";
+import PersonalProductsCatalog from "../views/product/catalog/PersonalProductsCatalog";
 
 const router = createBrowserRouter(
     createRoutesFromChildren(
@@ -29,7 +30,7 @@ const router = createBrowserRouter(
                     }
                 />
                 <Route path={`${PrivateRoutes.ADMIN}${PrivateRoutes.PRODUCT}`}>
-                    <Route index element={<div>list personal products</div>} />
+                    <Route index element={<PersonalProductsCatalog />} />
                     <Route path={`${PrivateRoutes.ADMIN}${PrivateRoutes.PRODUCT}${PrivateRoutes.EDIT}`} element={<div>edit product</div>} />
                     <Route path={`${PrivateRoutes.ADMIN}${PrivateRoutes.PRODUCT}${PrivateRoutes.CREATE}`} element={<CreateProduct />} />
                 </Route>

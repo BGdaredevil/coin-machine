@@ -24,3 +24,16 @@ export interface IProuduct {
     price: number;
     inventoryCount: number;
 }
+
+export interface IApiProduct {
+    _id: string;
+    name: string;
+    description: string;
+    imageUrl: string;
+    price: number;
+    inventoryCount: number;
+    owner: string;
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+}
