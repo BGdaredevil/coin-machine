@@ -4,11 +4,26 @@ import AuthMiddleware from "../middlewares/authMiddleware.js";
 
 const router = Router();
 
-const loadAll = async (req, res) => {
-    try {
-        const products = await ProductService.getAll();
+const publicLoadAllByOwner = async (req, res, next) => {
+    if (req.query.person) {
+        try {
+            const products = await ProductService.getAllByOwner(req.query.person);
 
-        res.status(200).json({ products });
+            res.status(200).json(products);
+        } catch (err) {
+            res.status(412).json({ type: "data-access-error", message: "invalid person" });
+        }
+        return;
+    }
+
+    next();
+};
+
+const loadAllByOwner = async (req, res) => {
+    try {
+        const products = await ProductService.getAllByOwner(req.user.id);
+
+        res.status(200).json(products);
     } catch (err) {
         res.status(412).json({ type: "data-access-error", message: "Cannot load this data" });
     }
@@ -198,7 +213,7 @@ const canTouch = async (req, res, next) => {
 //     res.redirect(`/volcano/not-allowed-action?error=${encodeURIComponent("you cannot vote more than once")}`);
 // };
 
-router.get("/catalog", loadAll);
+router.get("/catalog", publicLoadAllByOwner, AuthMiddleware.isAuth, loadAllByOwner);
 
 // router.get("/search", searchRenderer);
 // router.post("/search", searchRenderer);

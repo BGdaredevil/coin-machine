@@ -4,6 +4,10 @@ const create = (data) => {
     return ProductModel.create(data);
 };
 
+const getAllByOwner = (id) => {
+    return ProductModel.find({ owner: id }).lean();
+};
+
 const getAll = () => {
     return ProductModel.find({}).lean();
 };
@@ -51,6 +55,7 @@ const ProductService = {
     // getAllPublic,
     create,
     getAll,
+    getAllByOwner,
     getOne,
     updateOne,
     deleteOne,
