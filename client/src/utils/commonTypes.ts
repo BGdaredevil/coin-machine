@@ -38,3 +38,7 @@ export interface IApiProduct {
     updatedAt: string;
     __v: number;
 }
+
+export interface IMachine {
+    name: string;
+}
