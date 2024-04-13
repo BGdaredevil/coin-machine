@@ -6,12 +6,11 @@ export enum Actions {
 }
 
 export interface IForm {
-    email: IFormField;
-    password: IFormField;
+    email: IFormField<string>;
+    password: IFormField<string>;
 }
 
 export interface IAction {
     type: `${Actions}`;
     payload?: string;
 }
-

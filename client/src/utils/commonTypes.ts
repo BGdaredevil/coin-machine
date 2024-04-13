@@ -1,5 +1,5 @@
-export interface IFormField {
-    value: string;
+export interface IFormField<T> {
+    value: T;
     error: boolean;
     touched: boolean;
     errorMessage: string;
@@ -14,4 +14,13 @@ export interface IUserDto {
 export interface IUserResponse {
     id: string;
     email: string;
+}
+
+export interface IProuduct {
+    id: string;
+    name: string;
+    description: string;
+    imageUrl: string;
+    price: number;
+    inventoryCount: number;
 }

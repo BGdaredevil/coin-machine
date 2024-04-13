@@ -7,9 +7,9 @@ export enum Actions {
 }
 
 export interface IForm {
-    email: IFormField;
-    password: IFormField;
-    repeatPassword: IFormField;
+    email: IFormField<string>;
+    password: IFormField<string>;
+    repeatPassword: IFormField<string>;
 }
 
 export interface IAction {
