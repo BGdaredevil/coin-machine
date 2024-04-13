@@ -3,6 +3,7 @@ const router = Router();
 
 import authController from "./controllers/authController.js";
 import productController from "./controllers/productController.js";
+import machineController from "./controllers/machineController.js";
 // import postController from "./controllers/postController.js";
 
 // * debug
@@ -14,10 +15,11 @@ router.use((req, res, next) => {
 
 router.use("/user", authController);
 router.use("/product", productController);
+router.use("/machine", machineController);
 // router.use("/posts", postController);
 router.use("*", (req, res) => {
     console.log(req.body);
-    res.code(200).json({
+    res.status(200).json({
         message: "Hello i am restfull API -- please use my endpoints correctly -- /user; ",
     });
     res.end();

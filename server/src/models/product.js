@@ -10,16 +10,25 @@ const ProductSchema = new mongoose.Schema(
             validate: [/^https?:\/{2}/, "Please enter a valid URL"],
         },
         price: { type: Number, required: true, min: [0.01, "Price should be a positive number"] },
-        inventoryCount: {
-            type: Number,
-            required: true,
-            min: [0, "Inventory count should be positive"],
-            max: [15, "Max inventory space is 15 items"],
-        },
+        // inventoryCount: {
+        //     type: Number,
+        //     required: true,
+        //     min: [0, "Inventory count should be positive"],
+        //     max: [15, "Max inventory space is 15 items"],
+        // },
         owner: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
         },
+        // test: [
+        //     {
+        //         count: { type: Number, default: 3 },
+        //         owner: {
+        //             type: mongoose.Schema.Types.ObjectId,
+        //             ref: "User",
+        //         },
+        //     },
+        // ],
     },
     { timestamps: true }
 );
