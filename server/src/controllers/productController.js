@@ -69,8 +69,6 @@ const create = async (req, res) => {
 
         const newInstance = await ProductService.create(escapedProduct);
 
-        newInstance;
-
         res.status(200).json({
             id: newInstance._id,
             name: newInstance.name,
@@ -118,7 +116,7 @@ const edit = async (req, res) => {
         imageUrl: req.body.imageUrl.trim(),
         price: req.body.price,
         inventoryCount: req.body.inventoryCount,
-        owner: req.user.id,
+        // owner: req.user.id,
     };
 
     try {
@@ -129,8 +127,9 @@ const edit = async (req, res) => {
             return;
         }
 
-        await ProductService.updateOne(req.params.id, escapedProduct);
-        res.redirect(`/volcano/details/${req.params.id}`);
+        const newInstance = await ProductService.updateOne(req.params.id, escapedProduct);
+
+        res.status(200).json(newInstance.toObject());
     } catch (err) {
         const errKeys = Object.keys(err?.errors);
         if (
@@ -193,7 +192,7 @@ const remove = async (req, res) => {
 
 const canTouch = async (req, res, next) => {
     const item = await ProductService.getOne(req.params.id);
-    const isOwner = item.owner == req?.user?.id;
+    const isOwner = item.owner._id == req?.user?.id;
 
     if (isOwner) {
         next();

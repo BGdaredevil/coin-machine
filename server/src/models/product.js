@@ -13,12 +13,12 @@ const ProductSchema = new mongoose.Schema(
         inventoryCount: {
             type: Number,
             required: true,
-            min: [0, "Year of Last Eruption should be a positive number"],
-            max: [15, "Year of Last Eruption cannot be in the future."],
+            min: [0, "Inventory count should be positive"],
+            max: [15, "Max inventory space is 15 items"],
         },
         owner: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "user",
+            ref: "User",
         },
     },
     { timestamps: true }
