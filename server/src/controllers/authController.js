@@ -32,7 +32,7 @@ router.post("/register", AuthMiddleware.isGuest, async (req, res) => {
         const token = await getToken(newUser);
 
         res.cookie(cookie_name, token, { httpOnly: true });
-        res.status(200).json({ email: newUser.email, id: newUser._id });
+        res.status(200).json({ email: newUser.email, id: newUser._id, token });
     } catch (err) {
         console.log(err);
         res.status(412).json({
@@ -59,7 +59,7 @@ router.post("/login", AuthMiddleware.isGuest, async (req, res) => {
         }
         const token = await getToken(user);
         res.cookie(cookie_name, token, { httpOnly: true });
-        res.status(200).json({ email: user.email, id: user._id });
+        res.status(200).json({ email: user.email, id: user._id, token });
         return;
     } catch (err) {
         res.status(412).json({

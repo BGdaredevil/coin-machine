@@ -16,17 +16,17 @@ const auth = async (req, res, next) => {
         console.log(err);
         res.clearCookie(cookie_name);
         res.status(400).json({
-            type: "unauthorized",
+            type: "unauthorized-invalid-token",
             message: "you shall not pass",
         });
-        // res.redirect("/user/login");
+        // res.redirect("/login");
     }
 };
 
 const isAuth = (req, res, next) => {
     if (!req.user) {
         return res.status(400).json({
-            type: "unauthorized",
+            type: "unauthorized-guests",
             message: "you shall not pass as guest",
         });
     }
@@ -36,7 +36,7 @@ const isAuth = (req, res, next) => {
 const isGuest = (req, res, next) => {
     if (req.user) {
         return res.status(400).json({
-            type: "unauthorized",
+            type: "unauthorized-users",
             message: "you shall not pass as user",
         });
     }
