@@ -14,6 +14,7 @@ export interface IUserDto {
 export interface IUserResponse {
     id: string;
     email: string;
+    token: string;
 }
 
 export interface IProuduct {

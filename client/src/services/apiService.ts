@@ -1,12 +1,8 @@
-// todo read cookies instead
-
-const user = localStorage.getItem(import.meta.env.VITE_TOKEN_LOCAL_STORAGE!);
-
 const fetchWrap = async (url: RequestInfo | URL, options: RequestInit) => {
     try {
         const res = await fetch(url, options);
         if (!res.ok) {
-            let msg = await res.json();
+            const msg = await res.json();
             throw msg;
         }
 
@@ -25,10 +21,6 @@ const fetchWrap = async (url: RequestInfo | URL, options: RequestInit) => {
 const getOptions = (config: RequestInit, method: RequestInit["method"] = "get", payload?: object) => {
     const options: RequestInit = { method: method.toUpperCase(), credentials: "include", ...config };
     const headers = new Headers();
-
-    if (user) {
-        headers.set("X-Authorization", user);
-    }
 
     if (payload) {
         headers.set("Content-Type", "application/json");
