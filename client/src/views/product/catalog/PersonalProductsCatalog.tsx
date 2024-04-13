@@ -30,8 +30,6 @@ const PersonalProductsCatalog: FC<PersonalProductsCatalogProps> = () => {
         return () => controller.abort();
     }, [user]);
 
-    console.log(products);
-
     return (
         <Box>
             <EditProduct
@@ -53,27 +51,41 @@ const PersonalProductsCatalog: FC<PersonalProductsCatalogProps> = () => {
                     );
                 }}
             />
-            {products.map((product) => (
-                <Card key={product._id} sx={{ width: "250px" }}>
-                    <CardMedia component="img" src={product.imageUrl} alt="Product-image" />
-                    <CardContent>
-                        <Typography gutterBottom variant="h5" component="div">
-                            {product.name}
-                        </Typography>
-                        <Typography gutterBottom variant="body1" component="div">
-                            {product.inventoryCount} available at {product.price} EUR/pcs
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                            {product.description}
-                        </Typography>
-                    </CardContent>
-                    <CardActions>
-                        <Button sx={{ marginLeft: "auto" }} variant="outlined" size="small" onClick={() => setSelectedproduct(product)}>
-                            Edit
-                        </Button>
-                    </CardActions>
-                </Card>
-            ))}
+            <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", justifyContent: "center" }}>
+                {products.map((product) => (
+                    <div key={product._id}>
+                        <Card sx={{ width: "280px", margin: "10px", boxSizing: "border-box" }}>
+                            <CardMedia
+                                component="img"
+                                src={product.imageUrl}
+                                alt="Product-image"
+                                sx={{ objectFit: "cover", height: "200px" }}
+                            />
+                            <CardContent>
+                                <Typography gutterBottom variant="h5" component="div">
+                                    {product.name}
+                                </Typography>
+                                <Typography gutterBottom variant="body1" component="div">
+                                    {product.inventoryCount} available at {product.price} EUR/pcs
+                                </Typography>
+                                <Typography variant="body2" color="text.secondary">
+                                    {product.description}
+                                </Typography>
+                            </CardContent>
+                            <CardActions>
+                                <Button
+                                    sx={{ marginLeft: "auto" }}
+                                    variant="outlined"
+                                    size="small"
+                                    onClick={() => setSelectedproduct(product)}
+                                >
+                                    Edit
+                                </Button>
+                            </CardActions>
+                        </Card>
+                    </div>
+                ))}
+            </div>
         </Box>
     );
 };
