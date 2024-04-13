@@ -4,6 +4,7 @@ import { getUserData, loginUser, registerUser, serverLogout } from "../services/
 import { toastError } from "../utils/toast";
 import cookies from "../utils/cookies";
 import { isCancelledErrorProcessor } from "../services/apiService";
+import { AUTH_COOKIE_KEY, AUTH_COOKIE_TOKEN_KEY } from "../config/appConstants";
 
 interface IUser {
     id: string;
@@ -17,8 +18,6 @@ interface IAuthContext {
     register: (data: IUserDto) => Promise<void>;
     isAuth: boolean;
 }
-
-const AUTH_COOKIE_KEY = "my-id";
 
 export const AuthContext = createContext<IAuthContext>({
     user: null,
@@ -36,7 +35,9 @@ const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
             const response = await registerUser(data);
 
             setUser({ id: response.id, email: response.email });
+
             cookies.set(AUTH_COOKIE_KEY, response.id);
+            cookies.set(AUTH_COOKIE_TOKEN_KEY, response.token);
         } catch (err: any) {
             console.log(err);
 
@@ -50,6 +51,7 @@ const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 
             setUser({ id: response.id, email: response.email });
             cookies.set(AUTH_COOKIE_KEY, response.id);
+            cookies.set(AUTH_COOKIE_TOKEN_KEY, response.token);
         } catch (err: any) {
             console.log(err);
 
@@ -63,9 +65,12 @@ const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 
             setUser(null);
             cookies.remove(AUTH_COOKIE_KEY);
+            cookies.remove(AUTH_COOKIE_TOKEN_KEY);
         } catch (err: any) {
             console.log(err);
-            toastError("Sorry something went wrong");
+            setUser(null);
+            cookies.remove(AUTH_COOKIE_KEY);
+            cookies.remove(AUTH_COOKIE_TOKEN_KEY);
         }
     };
 
@@ -96,10 +101,13 @@ const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
                 .catch(() => {
                     setUser(null);
                     cookies.remove(AUTH_COOKIE_KEY);
+                    cookies.remove(AUTH_COOKIE_TOKEN_KEY);
                 });
 
             return () => controller.abort();
         }
+
+        setUser(null);
     }, []);
 
     return <AuthContext.Provider value={authContextValue}>{children}</AuthContext.Provider>;

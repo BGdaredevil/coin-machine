@@ -5,22 +5,26 @@ import Register from "../views/auth/register/Register";
 import Login from "../views/auth/login/Login";
 import CreateProduct from "../views/product/create/CreateProduct";
 import PersonalProductsCatalog from "../views/product/catalog/PersonalProductsCatalog";
+import PrivateRoute from "./PrivateRoute";
+import PublicRoute from "./PublicRoute";
+import AuthListener from "./AuthListener";
 
 const router = createBrowserRouter(
     createRoutesFromChildren(
-        <Route path={PublicRoutes.BASE_PATH} element={<MainLayout />}>
+        <Route
+            path={PublicRoutes.BASE_PATH}
+            element={
+                <AuthListener>
+                    <MainLayout />
+                </AuthListener>
+            }
+        >
             <Route index element={<div>pesho home // outlet comes here ... i.e. this is the layout</div>} />
-            <Route path={PublicRoutes.LOGIN} element={<Login />} />
-            <Route path={PublicRoutes.REGISTER} element={<Register />} />
-            <Route
-                path={PrivateRoutes.ADMIN}
-                // element={
-                //     <>
-                //         <div>layout</div>
-                //         <Outlet />
-                //     </>
-                // }
-            >
+            <Route path="" element={<PublicRoute />}>
+                <Route path={PublicRoutes.LOGIN} element={<Login />} />
+                <Route path={PublicRoutes.REGISTER} element={<Register />} />
+            </Route>
+            <Route path={PrivateRoutes.ADMIN} element={<PrivateRoute />}>
                 <Route
                     index
                     element={
