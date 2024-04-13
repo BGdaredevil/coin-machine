@@ -40,6 +40,14 @@ const getOptions = (config: RequestInit, method: RequestInit["method"] = "get", 
     return options;
 };
 
+export const isCancelledErrorProcessor = (e: any) => {
+    if (e.code === 20 && e.name === "AbortError") {
+        return;
+    }
+
+    throw e;
+};
+
 const ApiService = {
     get: (url: RequestInfo | URL, config: RequestInit = {}) => fetchWrap(url, getOptions(config)),
     post: (url: RequestInfo | URL, data: object, config: RequestInit = {}) => fetchWrap(url, getOptions(config, "post", data)),

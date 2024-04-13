@@ -3,6 +3,7 @@ import { IUserDto } from "../utils/commonTypes";
 import { getUserData, loginUser, registerUser, serverLogout } from "../services/authService";
 import { toastError } from "../utils/toast";
 import cookies from "../utils/cookies";
+import { isCancelledErrorProcessor } from "../services/apiService";
 
 interface IUser {
     id: string;
@@ -88,12 +89,14 @@ const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 
         if (personId) {
             const controller = new AbortController();
-            getUserData(personId, { signal: controller.signal }).then((personData) =>
-                setUser({
-                    id: personData.id,
-                    email: personData.email,
-                })
-            );
+            getUserData(personId, { signal: controller.signal })
+                .then((personData) =>
+                    setUser({
+                        id: personData.id,
+                        email: personData.email,
+                    })
+                )
+                .catch(isCancelledErrorProcessor);
 
             return () => controller.abort();
         }
