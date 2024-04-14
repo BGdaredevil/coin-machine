@@ -23,8 +23,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import { toastError, toastSuccess } from "../../../utils/toast";
 import { IItemAutoselect, IMachine } from "../../../utils/commonTypes";
 import EditMachine from "./EditMachine";
+import { MACHINE_KEY } from "../../../config/appConstants";
 
-const MACHINE_KEY = "machine";
 
 const MyMachines: FC = () => {
     const [params, setParams] = useSearchParams();
@@ -78,7 +78,7 @@ const MyMachines: FC = () => {
                 // console.log(res);
                 setProducts((prev) => [...prev, ...productsToRemove]);
                 setProductsToRemove([]);
-                toastSuccess("Products Removed");
+                toastSuccess("Products Updated");
                 setCurrent(res);
             }
         );
