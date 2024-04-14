@@ -57,8 +57,8 @@ const CreateMachine: FC<CreateProductProps> = () => {
                 variant="standard"
                 color="secondary"
                 id="name-input"
-                label="Product Name"
-                placeholder="Product Name"
+                label="Machine Name"
+                placeholder="Machine Name"
                 type="text"
                 fullWidth
             />

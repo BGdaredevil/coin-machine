@@ -1,5 +1,5 @@
 import { endpoints } from "../config/apiEndpoints";
-import { IMachine } from "../utils/commonTypes";
+import { ICoinsRefillDto, IMachine } from "../utils/commonTypes";
 import ApiService from "./apiService";
 
 // todo fix typescript
@@ -22,6 +22,10 @@ export const getMachine = (id: string, config: RequestInit): Promise<any> => {
 
 export const addProducts = (id: string, dto: any, config?: RequestInit): Promise<any> => {
     return ApiService.put(`${endpoints.machineApi}/inventory/${id}/add-products`, dto, config);
+};
+
+export const refillCoins = (id: string, dto: ICoinsRefillDto, config?: RequestInit): Promise<any> => {
+    return ApiService.put(`${endpoints.machineApi}/coins/${id}/refill`, dto, config);
 };
 
 export const editMachineProducts = (id: string, dto: any, config?: RequestInit): Promise<any> => {

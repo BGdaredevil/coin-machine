@@ -69,3 +69,14 @@ export interface IMachine {
     createdAt: string;
     updatedAt: string;
 }
+
+export interface ICoinsRefillDto {
+    oneCCoin?: number;
+    twoCCoin?: number;
+    fiveCCoin?: number;
+    tenCCoin?: number;
+    twentyCCoin?: number;
+    fiftyCCoin?: number;
+    oneDCoin?: number;
+    twoDCoin?: number;
+}

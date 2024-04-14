@@ -183,6 +183,24 @@ const addProducts = async (req, res) => {
     }
 };
 
+const refillCoins = async (req, res) => {
+    try {
+        const coinLabels = Object.keys(req.body);
+        // todo find better way to not inject foreign keys
+        const updateObj = Object.assign(
+            {},
+            ...["oneCCoin", "twoCCoin", "fiveCCoin", "tenCCoin", "twentyCCoin", "fiftyCCoin", "oneDCoin", "twoDCoin"]
+                .filter((e) => coinLabels.includes(e))
+                .map((e) => ({ [e]: 50 }))
+        );
+        const newInstance = await MachineService.updateOne(req.params.id, updateObj);
+
+        res.status(200).json(newInstance.toObject());
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 // ? Check all render calls !!
 const edit = async (req, res) => {
     const escapedMachine = {
@@ -299,6 +317,8 @@ router.post("/create", AuthMiddleware.isAuth, create);
 
 // router.get("/edit/:id", isAuth, loadItem, canTouch, (req, res) => res.render("volcano/edit"));
 router.put("/edit/:id", AuthMiddleware.isAuth, canTouch, edit);
+
+router.put("/coins/:id/refill", AuthMiddleware.isAuth, canTouch, refillCoins);
 
 router.put("/inventory/:id/add-products", AuthMiddleware.isAuth, canTouch, addProducts);
 router.put("/inventory/:id/edit-machine-products", AuthMiddleware.isAuth, canTouch, editMachineProducts);

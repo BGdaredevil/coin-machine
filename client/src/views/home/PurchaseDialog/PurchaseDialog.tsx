@@ -18,6 +18,7 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import ReplayIcon from "@mui/icons-material/Replay";
 import coinReducer from "./coinReducer";
+import { coinIterationHelper } from "./typesUtils";
 
 interface PurchaseDialogProps {
     machine: Omit<IMachine, "owner">;
@@ -27,17 +28,6 @@ interface PurchaseDialogProps {
     onCancel: VoidFunction;
     onSubmit: (data: any) => void;
 }
-
-const coinIterationHelper = [
-    { field: "oneCCoin" as const, value: 0.01 },
-    { field: "twoCCoin" as const, value: 0.02 },
-    { field: "fiveCCoin" as const, value: 0.05 },
-    { field: "tenCCoin" as const, value: 0.1 },
-    { field: "twentyCCoin" as const, value: 0.2 },
-    { field: "fiftyCCoin" as const, value: 0.5 },
-    { field: "oneDCoin" as const, value: 1 },
-    { field: "twoDCoin" as const, value: 2 },
-];
 
 const PurchaseDialog: FC<PurchaseDialogProps> = ({
     machine,
@@ -150,9 +140,9 @@ const PurchaseDialog: FC<PurchaseDialogProps> = ({
                             })}
                             <Box sx={{ display: "flex", alignItems: "center" }}>
                                 <Box sx={{ flexGrow: 1 }}>
-                                    <Typography variant="body1">total: {form.total.toFixed(2)}</Typography>
+                                    <Typography variant="body1">total: {form.total.toFixed(2)} EUR</Typography>
                                     <Typography variant="body1">
-                                        remaining: {(Math.round((form.total - form.insertedValue) * 100) / 100).toFixed(2)}
+                                        remaining: {(Math.round((form.total - form.insertedValue) * 100) / 100).toFixed(2)} EUR
                                     </Typography>
                                 </Box>
                                 <IconButton

@@ -1,7 +1,11 @@
 import {
+    Accordion,
+    AccordionDetails,
+    AccordionSummary,
     Autocomplete,
     Box,
     Button,
+    Chip,
     FormControl,
     IconButton,
     Paper,
@@ -12,19 +16,28 @@ import {
     TableHead,
     TableRow,
     TextField,
+    Typography,
 } from "@mui/material";
 import { FC, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { addProducts, editMachineProducts, getMachine, getMyMachines, getNotAssignedProducts } from "../../../services/machineService";
+import {
+    addProducts,
+    editMachineProducts,
+    getMachine,
+    getMyMachines,
+    getNotAssignedProducts,
+    refillCoins,
+} from "../../../services/machineService";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import EditIcon from "@mui/icons-material/Edit";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { toastError, toastSuccess } from "../../../utils/toast";
 import { IItemAutoselect, IMachine } from "../../../utils/commonTypes";
 import EditMachine from "./EditMachine";
 import { MACHINE_KEY } from "../../../config/appConstants";
-
+import { coinIterationHelper } from "../../home/PurchaseDialog/typesUtils";
 
 const MyMachines: FC = () => {
     const [params, setParams] = useSearchParams();
@@ -257,6 +270,66 @@ const MyMachines: FC = () => {
                     </Box>
                     {current ? (
                         <Box>
+                            <Box mb={2}>
+                                <Accordion>
+                                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                                        <Box display={"flex"} gap="20px">
+                                            <Typography variant="body1">Coin Stacks:</Typography>
+                                            <Chip
+                                                size="medium"
+                                                label={"refill all"}
+                                                variant="outlined"
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    e.stopPropagation();
+                                                    refillCoins(current._id, {
+                                                        oneCCoin: 50,
+                                                        twoCCoin: 50,
+                                                        fiveCCoin: 50,
+                                                        tenCCoin: 50,
+                                                        twentyCCoin: 50,
+                                                        fiftyCCoin: 50,
+                                                        oneDCoin: 50,
+                                                        twoDCoin: 50,
+                                                    }).then((res) => {
+                                                        setCurrent((prev) =>
+                                                            Object.assign({}, prev, {
+                                                                oneCCoin: res.oneCCoin,
+                                                                twoCCoin: res.twoCCoin,
+                                                                fiveCCoin: res.fiveCCoin,
+                                                                tenCCoin: res.tenCCoin,
+                                                                twentyCCoin: res.twentyCCoin,
+                                                                fiftyCCoin: res.fiftyCCoin,
+                                                                oneDCoin: res.oneDCoin,
+                                                                twoDCoin: res.twoDCoin,
+                                                            })
+                                                        );
+                                                    });
+                                                }}
+                                                icon={<AddIcon />}
+                                            />
+                                        </Box>
+                                    </AccordionSummary>
+                                    <AccordionDetails>
+                                        <Box display={"flex"} gap="20px">
+                                            {coinIterationHelper.map((e) => (
+                                                <Chip
+                                                    size="medium"
+                                                    key={e.field}
+                                                    label={`${e.value}: ${current[e.field]}`}
+                                                    variant="outlined"
+                                                    onClick={() => {
+                                                        refillCoins(current._id, { [e.field]: 50 }).then((res) =>
+                                                            setCurrent((prev) => Object.assign({}, prev, { [e.field]: res[e.field] }))
+                                                        );
+                                                    }}
+                                                    icon={<AddIcon />}
+                                                />
+                                            ))}
+                                        </Box>
+                                    </AccordionDetails>
+                                </Accordion>
+                            </Box>
                             <TableContainer component={Paper}>
                                 <Table aria-label="simple table">
                                     <TableHead>
