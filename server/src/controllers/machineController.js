@@ -32,6 +32,18 @@ const loadAllByOwner = async (req, res) => {
     }
 };
 
+const loadAll = async (req, res) => {
+    try {
+        const machines = await MachineService.getAll();
+
+        res.status(200).json(machines);
+    } catch (err) {
+        console.log(err);
+
+        res.status(412).json({ type: "data-access-error", message: "Cannot load this data" });
+    }
+};
+
 const loadOne = async (req, res) => {
     try {
         const machine = await MachineService.getOne(req.params.id);
@@ -270,6 +282,8 @@ const canTouch = async (req, res, next) => {
 
 //     res.redirect(`/volcano/not-allowed-action?error=${encodeURIComponent("you cannot vote more than once")}`);
 // };
+
+router.get("/public-catalog", loadAll);
 
 router.get("/catalog", publicLoadAllByOwner, AuthMiddleware.isAuth, loadAllByOwner);
 
