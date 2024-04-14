@@ -15,6 +15,7 @@ const MachineSchema = new mongoose.Schema(
         fiftyCCoin: { type: Number, default: 0, max: [50, "Max inventory space is 50 coins"] },
         oneDCoin: { type: Number, default: 0, max: [50, "Max inventory space is 50 coins"] },
         twoDCoin: { type: Number, default: 0, max: [50, "Max inventory space is 50 coins"] },
+        overflow: { type: Number, default: 0 },
         inventory: [
             {
                 inventoryCount: {

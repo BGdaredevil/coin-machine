@@ -1,3 +1,4 @@
+import MachineModel from "../models/machine.js";
 import ProductModel from "../models/product.js";
 
 const create = (data) => {
@@ -6,6 +7,14 @@ const create = (data) => {
 
 const getAllByOwner = (id) => {
     return ProductModel.find({ owner: id }).lean();
+};
+
+const getAllByOwnerNotInMachine = async (ownerId, machineId) => {
+    const rest = await MachineModel.findById(machineId)
+        .select("inventory.item")
+        .transform((doc) => (doc == null ? doc : doc.inventory.map((e) => e.item)));
+
+    return ProductModel.find({ owner: ownerId, _id: { $nin: [...rest] } }).lean();
 };
 
 const getAll = () => {
@@ -62,6 +71,7 @@ const ProductService = {
     // join,
     // search,
     getOneSimple,
+    getAllByOwnerNotInMachine,
 };
 
 export default ProductService;

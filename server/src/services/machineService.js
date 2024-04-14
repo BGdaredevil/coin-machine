@@ -5,7 +5,7 @@ const create = (data) => {
 };
 
 const getAllByOwner = (id) => {
-    return MachineModel.find({ owner: id }).lean();
+    return MachineModel.find({ owner: id }, { name: 1 }, { sort: { name: 1 } }).lean();
 };
 
 const getAll = () => {
@@ -13,7 +13,11 @@ const getAll = () => {
 };
 
 const getOne = (id) => {
-    return MachineModel.findById(id).populate("owner").populate("inventory.item").lean();
+    return MachineModel.findById(id).populate("owner", "-password").populate("inventory.item").lean();
+};
+
+const getOneRaw = (id) => {
+    return MachineModel.findById(id).populate("owner", "-password").populate("inventory.item");
 };
 
 const getOneSimple = (id) => {
@@ -57,6 +61,7 @@ const MachineService = {
     getAll,
     getAllByOwner,
     getOne,
+    getOneRaw,
     updateOne,
     deleteOne,
     // join,

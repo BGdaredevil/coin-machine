@@ -1,15 +1,16 @@
 import { Router } from "express";
 import AuthMiddleware from "../middlewares/authMiddleware.js";
 import MachineService from "../services/machineService.js";
+import ProductService from "../services/productService.js";
 
 const router = Router();
 
 const publicLoadAllByOwner = async (req, res, next) => {
     if (req.query.person) {
         try {
-            const products = await MachineService.getAllByOwner(req.query.person);
+            const machines = await MachineService.getAllByOwner(req.query.person);
 
-            res.status(200).json(products);
+            res.status(200).json(machines);
         } catch (err) {
             res.status(412).json({ type: "data-access-error", message: "invalid person" });
         }
@@ -21,10 +22,24 @@ const publicLoadAllByOwner = async (req, res, next) => {
 
 const loadAllByOwner = async (req, res) => {
     try {
-        const products = await MachineService.getAllByOwner(req.user.id);
+        const machines = await MachineService.getAllByOwner(req.user.id);
 
-        res.status(200).json(products);
+        res.status(200).json(machines);
     } catch (err) {
+        console.log(err);
+
+        res.status(412).json({ type: "data-access-error", message: "Cannot load this data" });
+    }
+};
+
+const loadOne = async (req, res) => {
+    try {
+        const machine = await MachineService.getOne(req.params.id);
+
+        res.status(200).json(machine);
+    } catch (err) {
+        console.log(err);
+
         res.status(412).json({ type: "data-access-error", message: "Cannot load this data" });
     }
 };
@@ -95,22 +110,83 @@ const create = async (req, res) => {
     }
 };
 
+const inventoryEdit = async (req, res) => {
+    console.log(req.body);
+};
+
+const getNotAssignedProducts = async (req, res) => {
+    try {
+        const products = await ProductService.getAllByOwnerNotInMachine(req.user.id, req.params.id);
+
+        res.status(200).json(products);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+const editMachineProducts = async (req, res) => {
+    console.log(req.params.id);
+    console.log(req.body);
+
+    try {
+        const machine = await MachineService.getOneRaw(req.params.id);
+        const productsToRemove = req.body.productsToRemove;
+        const invChanges = req.body.inventoryChanges;
+
+        machine.inventory = machine.inventory.filter((e) => !productsToRemove.includes(e.item._id.toString()));
+        machine.inventory = machine.inventory.map((invItem) => ({
+            ...invItem,
+            inventoryCount: invChanges[invItem.item._id.toString()],
+        }));
+
+        await machine.updateOne({ $set: { inventory: machine.inventory } });
+
+        const updated = await MachineService.getOne(req.params.id);
+
+        res.status(200).json(updated);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+const addProducts = async (req, res) => {
+    console.log(req.params.id);
+    console.log(req.body);
+
+    try {
+        const machine = await MachineService.getOneRaw(req.params.id);
+        const existingIds = machine.inventory.map((e) => e.item._id.toString());
+        const productsToAdd = req.body.productsToAdd
+            .filter((e) => !existingIds.includes(e))
+            .map((productId) => ({ inventoryCount: 0, item: productId }));
+
+        machine.inventory.push(...productsToAdd);
+        await machine.updateOne({ $set: { inventory: machine.inventory } });
+
+        const updated = await MachineService.getOne(req.params.id);
+
+        res.status(200).json(updated);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 // ? Check all render calls !!
 const edit = async (req, res) => {
-    const escapedProduct = {
+    const escapedMachine = {
         _id: req.params.id,
         name: req.body.name.trim(),
     };
 
     try {
-        if (Object.values(escapedProduct).includes("")) {
+        if (Object.values(escapedMachine).includes("")) {
             res.status(412).json({ type: "missing-data-error", message: "Incomplete dataset" });
 
             console.log("empty detected");
             return;
         }
 
-        const newInstance = await MachineService.updateOne(req.params.id, escapedProduct);
+        const newInstance = await MachineService.updateOne(req.params.id, escapedMachine);
 
         res.status(200).json(newInstance.toObject());
     } catch (err) {
@@ -197,6 +273,8 @@ const canTouch = async (req, res, next) => {
 
 router.get("/catalog", publicLoadAllByOwner, AuthMiddleware.isAuth, loadAllByOwner);
 
+router.get("/:id", loadOne);
+
 // router.get("/search", searchRenderer);
 // router.post("/search", searchRenderer);
 
@@ -206,7 +284,14 @@ router.post("/create", AuthMiddleware.isAuth, create);
 // router.get("/details/:id", loadItem, (req, res) => res.render("volcano/details"));
 
 // router.get("/edit/:id", isAuth, loadItem, canTouch, (req, res) => res.render("volcano/edit"));
-router.post("/edit/:id", AuthMiddleware.isAuth, canTouch, edit);
+router.put("/edit/:id", AuthMiddleware.isAuth, canTouch, edit);
+
+router.put("/inventory/:id/add-products", AuthMiddleware.isAuth, canTouch, addProducts);
+router.put("/inventory/:id/edit-machine-products", AuthMiddleware.isAuth, canTouch, editMachineProducts);
+
+router.get("/inventory/:id/not-products", AuthMiddleware.isAuth, canTouch, getNotAssignedProducts);
+
+router.put("/inventory/:id/edit", AuthMiddleware.isAuth, canTouch, inventoryEdit);
 
 // router.get("/vote/:id", isAuth, loadItem, canVote, vote);
 router.get("/delete/:id", AuthMiddleware.isAuth, canTouch, remove);
