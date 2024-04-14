@@ -8,6 +8,10 @@ export const createMachine = (dto: any): Promise<any> => {
     return ApiService.post(`${endpoints.machineApi}/create`, dto);
 };
 
+export const getPublicMachines = (config: RequestInit): Promise<any> => {
+    return ApiService.get(`${endpoints.machineApi}/public-catalog`, config);
+};
+
 export const getMyMachines = (config: RequestInit): Promise<any> => {
     return ApiService.get(`${endpoints.machineApi}/catalog`, config);
 };

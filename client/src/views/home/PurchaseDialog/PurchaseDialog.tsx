@@ -1,0 +1,185 @@
+import { FC, useReducer } from "react";
+import { IApiProduct, IMachine } from "../../../utils/commonTypes";
+import {
+    Box,
+    Button,
+    Card,
+    CardContent,
+    CardMedia,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    Grid,
+    IconButton,
+    Typography,
+} from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
+import ReplayIcon from "@mui/icons-material/Replay";
+import coinReducer from "./coinReducer";
+
+interface PurchaseDialogProps {
+    machine: Omit<IMachine, "owner">;
+    productInfo: { inventoryCount: number; item: IApiProduct };
+    open: boolean;
+    onClose: VoidFunction;
+    onCancel: VoidFunction;
+    onSubmit: (data: any) => void;
+}
+
+const coinIterationHelper = [
+    { field: "oneCCoin" as const, value: 0.01 },
+    { field: "twoCCoin" as const, value: 0.02 },
+    { field: "fiveCCoin" as const, value: 0.05 },
+    { field: "tenCCoin" as const, value: 0.1 },
+    { field: "twentyCCoin" as const, value: 0.2 },
+    { field: "fiftyCCoin" as const, value: 0.5 },
+    { field: "oneDCoin" as const, value: 1 },
+    { field: "twoDCoin" as const, value: 2 },
+];
+
+const PurchaseDialog: FC<PurchaseDialogProps> = ({
+    machine,
+    productInfo: { inventoryCount, item: product },
+    open,
+    onClose,
+    onCancel,
+    onSubmit,
+}) => {
+    const [form, dispatchForm] = useReducer(coinReducer.coinReducer, coinReducer.initialState, (state) => {
+        return {
+            ...state,
+            productPrice: product.price,
+            productQuantity: 1,
+            total: product.price,
+        };
+    });
+
+    const close = () => {
+        onClose();
+    };
+    const cancel = () => {
+        onCancel();
+    };
+    const confirm = () => {
+        onSubmit({});
+    };
+
+    return (
+        <Dialog open={open} onClose={close} fullWidth maxWidth="md">
+            <DialogTitle>Purchase {product.name}</DialogTitle>
+            <DialogContent dividers>
+                <Grid container>
+                    <Grid item xs={12} sm={4}>
+                        <Card sx={{ boxSizing: "border-box" }}>
+                            <CardMedia
+                                component="img"
+                                src={product.imageUrl}
+                                alt="Product-image"
+                                sx={{ objectFit: "cover", maxHeight: "250px" }}
+                            />
+                            <CardContent>
+                                <Typography gutterBottom variant="h5" component="div">
+                                    {product.name}
+                                </Typography>
+                                <Typography gutterBottom variant="body1" component="div">
+                                    {inventoryCount} available at {product.price} EUR/pcs
+                                </Typography>
+                                <Typography variant="body2" color="text.secondary">
+                                    {product.description}
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                    <Grid item xs={12} sm={8}>
+                        <Box marginLeft={"8px"}>
+                            <Box sx={{ display: "flex", alignItems: "center" }}>
+                                <Box sx={{ flexGrow: 1, maxWidth: "80px" }}>
+                                    <Typography variant="body1">{form.productQuantity}</Typography>
+                                </Box>
+                                <Box sx={{ flexGrow: 1 }}>
+                                    <Typography variant="body1">to purchase: {form.productQuantity} pcs</Typography>
+                                </Box>
+                                <Box>
+                                    <IconButton
+                                        onClick={() => dispatchForm({ type: "setProductQuantity", payload: form.productQuantity + 1 })}
+                                    >
+                                        <AddIcon />
+                                    </IconButton>
+                                    <IconButton
+                                        onClick={() => dispatchForm({ type: "setProductQuantity", payload: form.productQuantity - 1 })}
+                                    >
+                                        <RemoveIcon />
+                                    </IconButton>
+                                </Box>
+                            </Box>
+                            {coinIterationHelper.map((coin) => {
+                                return (
+                                    <Box sx={{ display: "flex", alignItems: "center" }}>
+                                        <Box sx={{ flexGrow: 1, maxWidth: "80px" }}>
+                                            <Typography variant="body1">{coin.value}</Typography>
+                                        </Box>
+                                        <Box sx={{ flexGrow: 1 }}>
+                                            <Typography variant="body1">inserted: {form[coin.field]} coins</Typography>
+                                        </Box>
+                                        <Box>
+                                            <IconButton
+                                                onClick={() =>
+                                                    dispatchForm({
+                                                        type: "setCoin",
+                                                        payload: { field: coin.field, count: form[coin.field] + 1 },
+                                                    })
+                                                }
+                                            >
+                                                <AddIcon />
+                                            </IconButton>
+                                            <IconButton
+                                                onClick={() =>
+                                                    dispatchForm({
+                                                        type: "setCoin",
+                                                        payload: { field: coin.field, count: form[coin.field] - 1 },
+                                                    })
+                                                }
+                                            >
+                                                <RemoveIcon />
+                                            </IconButton>
+                                        </Box>
+                                    </Box>
+                                );
+                            })}
+                            <Box sx={{ display: "flex", alignItems: "center" }}>
+                                <Box sx={{ flexGrow: 1 }}>
+                                    <Typography variant="body1">total: {form.total.toFixed(2)}</Typography>
+                                    <Typography variant="body1">
+                                        remaining: {(Math.round((form.total - form.insertedValue) * 100) / 100).toFixed(2)}
+                                    </Typography>
+                                </Box>
+                                <IconButton
+                                    onClick={() =>
+                                        dispatchForm({
+                                            type: "reset",
+                                            payload: {
+                                                productPrice: product.price,
+                                                productQuantity: 1,
+                                                total: product.price,
+                                            },
+                                        })
+                                    }
+                                >
+                                    <ReplayIcon />
+                                </IconButton>
+                            </Box>
+                        </Box>
+                    </Grid>
+                </Grid>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={cancel}>Cancel</Button>
+                <Button onClick={confirm}>Confirm</Button>
+            </DialogActions>
+        </Dialog>
+    );
+};
+
+export default PurchaseDialog;
