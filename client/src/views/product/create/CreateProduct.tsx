@@ -41,7 +41,7 @@ const CreateProduct: FC<CreateProductProps> = () => {
         })
             .then(() => {
                 setSubmitting(false);
-                navigate(`${PrivateRoutes.ADMIN}${PrivateRoutes.PRODUCT}`);
+                navigate(`${PrivateRoutes.PRODUCT}`);
             })
             .catch(() => {
                 setSubmitting(false);
