@@ -2,7 +2,6 @@ enum Routes {
     BASE_PATH = "/",
     LOGIN = "/login",
     REGISTER = "/register",
-    ADMIN = "/admin",
     PRODUCT = "/product",
     MACHINE = "/machine",
     CREATE = "/create",
@@ -17,7 +16,6 @@ export enum PublicRoutes {
 }
 
 export enum PrivateRoutes {
-    ADMIN = Routes.ADMIN,
     PRODUCT = Routes.PRODUCT,
     MACHINE = Routes.MACHINE,
     CREATE = Routes.CREATE,

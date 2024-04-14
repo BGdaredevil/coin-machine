@@ -8,7 +8,7 @@ import PersonalProductsCatalog from "../views/product/catalog/PersonalProductsCa
 import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./PublicRoute";
 import AuthListener from "./AuthListener";
-import MachineHome from "../views/machine/MachineHome";
+import MachineHome from "../views/home/MachineHome";
 import CreateMachine from "../views/machine/create/CreateMachine";
 import MyMachines from "../views/machine/myMachines/MyMachines";
 
