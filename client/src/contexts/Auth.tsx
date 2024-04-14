@@ -80,7 +80,7 @@ const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
             login,
             logout,
             register,
-            isAuth: Boolean(user),
+            isAuth: Boolean(user) || !!cookies.get(AUTH_COOKIE_KEY),
         }),
         [user]
     );
