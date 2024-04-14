@@ -21,7 +21,7 @@ interface ISimpleAction {
 
 interface IResetAction {
     type: `${SpecialActions}`;
-    payload?: IMachine;
+    payload?: Pick<IMachine, "name">;
 }
 
 export type IAction = ISimpleAction | IResetAction;

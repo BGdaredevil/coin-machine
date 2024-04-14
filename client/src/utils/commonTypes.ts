@@ -39,6 +39,33 @@ export interface IApiProduct {
     __v: number;
 }
 
-export interface IMachine {
+export interface IItemAutoselect {
+    _id: string;
     name: string;
+}
+
+export interface IInventroyItem {
+    inventoryCount: 0;
+    item: IApiProduct;
+    _id: "661b8418cf85d43d974276df";
+}
+
+export interface IMachine {
+    _id: string;
+    name: string;
+    owner: {
+        _id: string;
+        email: string;
+    };
+    oneCCoin: number;
+    twoCCoin: number;
+    fiveCCoin: number;
+    tenCCoin: number;
+    twentyCCoin: number;
+    fiftyCCoin: number;
+    oneDCoin: number;
+    twoDCoin: number;
+    inventory: IInventroyItem[];
+    createdAt: string;
+    updatedAt: string;
 }

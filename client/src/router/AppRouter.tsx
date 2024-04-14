@@ -10,6 +10,7 @@ import PublicRoute from "./PublicRoute";
 import AuthListener from "./AuthListener";
 import MachineHome from "../views/machine/MachineHome";
 import CreateMachine from "../views/machine/create/CreateMachine";
+import MyMachines from "../views/machine/myMachines/MyMachines";
 
 const router = createBrowserRouter(
     createRoutesFromChildren(
@@ -29,12 +30,10 @@ const router = createBrowserRouter(
             <Route path="" element={<PrivateRoute />}>
                 <Route path={`${PrivateRoutes.PRODUCT}`}>
                     <Route index element={<PersonalProductsCatalog />} />
-                    {/* <Route path={`${PrivateRoutes.ADMIN}${PrivateRoutes.PRODUCT}${PrivateRoutes.EDIT}`} element={<div>edit product</div>} /> */}
                     <Route path={`${PrivateRoutes.PRODUCT}${PrivateRoutes.CREATE}`} element={<CreateProduct />} />
                 </Route>
                 <Route path={`${PrivateRoutes.MACHINE}`}>
-                    <Route index element={<div>my machines</div>} />
-                    {/* <Route path={`${PrivateRoutes.ADMIN}${PrivateRoutes.MACHINE}${PrivateRoutes.EDIT}`} element={<div>edit machine</div>} /> */}
+                    <Route index element={<MyMachines />} />
                     <Route path={`${PrivateRoutes.MACHINE}${PrivateRoutes.CREATE}`} element={<CreateMachine />} />
                 </Route>
                 <Route path={"pesho"} element={<div>pesho home</div>} />
