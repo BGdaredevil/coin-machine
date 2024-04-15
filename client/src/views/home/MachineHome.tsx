@@ -22,6 +22,7 @@ const MachineHome: FC<MachineHomeProps> = () => {
     useEffect(() => {
         if (!machineId) {
             setSelectedMachine(null);
+            setActiveMachine(null);
             return;
         }
 

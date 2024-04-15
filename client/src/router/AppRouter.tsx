@@ -36,13 +36,11 @@ const router = createBrowserRouter(
                     <Route index element={<MyMachines />} />
                     <Route path={`${PrivateRoutes.MACHINE}${PrivateRoutes.CREATE}`} element={<CreateMachine />} />
                 </Route>
-                <Route path={"pesho"} element={<div>pesho home</div>} />
-                <Route path={"pesho2"} element={<div>pesho home2</div>} />
             </Route>
         </Route>
     )
 );
 // debug
-router.subscribe((state) => console.log("new state", state, JSON.stringify(state.location)));
+// router.subscribe((state) => console.log("new state", state, JSON.stringify(state.location)));
 
 export default router;
