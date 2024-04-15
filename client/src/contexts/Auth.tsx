@@ -13,63 +13,70 @@ interface IUser {
 
 interface IAuthContext {
     user: IUser | null;
-    login: (data: Omit<IUserDto, "repeatPassword">) => Promise<void>;
-    logout: () => Promise<void>;
-    register: (data: IUserDto) => Promise<void>;
+    login: (data: Omit<IUserDto, "repeatPassword">) => Promise<{ success: boolean }>;
+    logout: () => Promise<{ success: boolean }>;
+    register: (data: IUserDto) => Promise<{ success: boolean }>;
     isAuth: boolean;
 }
 
 export const AuthContext = createContext<IAuthContext>({
     user: null,
-    login: () => Promise.resolve(undefined),
-    logout: () => Promise.resolve(undefined),
-    register: () => Promise.resolve(undefined),
+    login: () => Promise.resolve({ success: false }),
+    logout: () => Promise.resolve({ success: false }),
+    register: () => Promise.resolve({ success: false }),
     isAuth: false,
 });
 
 const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
     const [user, setUser] = useState<IUser | null>(null);
 
-    const register = async (data: IUserDto): Promise<void> => {
+    const register = async (data: IUserDto): Promise<{ success: boolean }> => {
         try {
             const response = await registerUser(data);
 
             setUser({ id: response.id, email: response.email });
             cookies.set(AUTH_COOKIE_KEY, response.id);
             cookies.set(AUTH_COOKIE_TOKEN_KEY, response.token);
-        } catch (err: any) {
-            console.log(err);
 
+            return { success: true };
+        } catch (err: any) {
             toastError("Sorry something went wrong");
+
+            return { success: false };
         }
     };
 
-    const login = async (data: Omit<IUserDto, "repeatPassword">): Promise<void> => {
+    const login = async (data: Omit<IUserDto, "repeatPassword">): Promise<{ success: boolean }> => {
         try {
             const response = await loginUser(data);
 
             setUser({ id: response.id, email: response.email });
             cookies.set(AUTH_COOKIE_KEY, response.id);
             cookies.set(AUTH_COOKIE_TOKEN_KEY, response.token);
-        } catch (err: any) {
-            console.log(err);
 
+            return { success: true };
+        } catch (err: any) {
             toastError("Sorry something went wrong");
+
+            return { success: false };
         }
     };
 
-    const logout = async (): Promise<void> => {
+    const logout = async (): Promise<{ success: boolean }> => {
         try {
             await serverLogout();
 
             setUser(null);
             cookies.remove(AUTH_COOKIE_KEY);
             cookies.remove(AUTH_COOKIE_TOKEN_KEY);
+
+            return { success: true };
         } catch (err: any) {
-            console.log(err);
             setUser(null);
             cookies.remove(AUTH_COOKIE_KEY);
             cookies.remove(AUTH_COOKIE_TOKEN_KEY);
+
+            return { success: false };
         }
     };
 
