@@ -3,7 +3,7 @@ import validators from "../../../utils/validators";
 import { IAction, IForm } from "../types";
 
 const initialEmptyForm: IForm = {
-    name: { value: "", error: false, touched: false, errorMessage: "" },
+    name: { value: "", error: false, touched: false, errorMessage: " " },
 };
 
 const getInitForm = () => {
@@ -15,7 +15,7 @@ const getInitForm = () => {
 const formReducer = (state: IForm, action: IAction): IForm => {
     switch (action.type) {
         case "name": {
-            const nextFieldState: IForm["name"] = { ...state.name, error: false, errorMessage: "" };
+            const nextFieldState: IForm["name"] = { ...state.name, error: false, errorMessage: " " };
             nextFieldState.value = action.payload!;
 
             return { ...state, name: nextFieldState };
@@ -46,7 +46,7 @@ const formReducer = (state: IForm, action: IAction): IForm => {
         }
 
         case "reset": {
-            const blankStrField = { value: "", error: false, touched: false, errorMessage: "" };
+            const blankStrField = { value: "", error: false, touched: false, errorMessage: " " };
             const actionPayload = action.payload as IProuduct | undefined;
 
             return {

@@ -58,7 +58,7 @@ const CreateMachine: FC = () => {
                 type="text"
                 fullWidth
             />
-            <Button color="secondary" type="submit" variant="outlined">
+            <Button sx={{ marginTop: "16px" }} color="secondary" type="submit" variant="outlined">
                 submit
             </Button>
         </Box>

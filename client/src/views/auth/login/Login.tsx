@@ -32,13 +32,13 @@ const initialForm = {
         value: "",
         error: false,
         touched: false,
-        errorMessage: "",
+        errorMessage: " ",
     },
     password: {
         value: "",
         error: false,
         touched: false,
-        errorMessage: "",
+        errorMessage: " ",
     },
 };
 

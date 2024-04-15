@@ -4,10 +4,10 @@ import validators from "../../../utils/validators";
 import { IAction, IForm } from "../types";
 
 const initialEmptyForm: IForm = {
-    name: { value: "", error: false, touched: false, errorMessage: "" },
-    description: { value: "", error: false, touched: false, errorMessage: "" },
-    imageUrl: { value: "", error: false, touched: false, errorMessage: "" },
-    price: { value: 0, error: false, touched: false, errorMessage: "" },
+    name: { value: "", error: false, touched: false, errorMessage: " " },
+    description: { value: "", error: false, touched: false, errorMessage: " " },
+    imageUrl: { value: "", error: false, touched: false, errorMessage: " " },
+    price: { value: 0, error: false, touched: false, errorMessage: " " },
 };
 
 const getInitForm = () => {
@@ -22,28 +22,28 @@ const getInitForm = () => {
 const formReducer = (state: IForm, action: IAction): IForm => {
     switch (action.type) {
         case "name": {
-            const nextFieldState: IForm["name"] = { ...state.name, error: false, errorMessage: "" };
+            const nextFieldState: IForm["name"] = { ...state.name, error: false, errorMessage: " " };
             nextFieldState.value = action.payload!;
 
             return { ...state, name: nextFieldState };
         }
 
         case "description": {
-            const nextFieldState: IForm["description"] = { ...state.description, error: false, errorMessage: "" };
+            const nextFieldState: IForm["description"] = { ...state.description, error: false, errorMessage: " " };
             nextFieldState.value = action.payload!;
 
             return { ...state, description: nextFieldState };
         }
 
         case "imageUrl": {
-            const nextFieldState: IForm["imageUrl"] = { ...state.imageUrl, error: false, errorMessage: "" };
+            const nextFieldState: IForm["imageUrl"] = { ...state.imageUrl, error: false, errorMessage: " " };
             nextFieldState.value = action.payload!;
 
             return { ...state, imageUrl: nextFieldState };
         }
 
         case "price": {
-            const nextFieldState: IForm["price"] = { ...state.price, error: false, errorMessage: "" };
+            const nextFieldState: IForm["price"] = { ...state.price, error: false, errorMessage: " " };
             nextFieldState.value = Number(action.payload!);
 
             return { ...state, price: nextFieldState };
@@ -104,8 +104,8 @@ const formReducer = (state: IForm, action: IAction): IForm => {
         }
 
         case "reset": {
-            const blankStrField = { value: "", error: false, touched: false, errorMessage: "" };
-            const blankNumberField = { value: 0, error: false, touched: false, errorMessage: "" };
+            const blankStrField = { value: "", error: false, touched: false, errorMessage: " " };
+            const blankNumberField = { value: 0, error: false, touched: false, errorMessage: " " };
             const actionPayload = action.payload as IProuduct | undefined;
 
             return {

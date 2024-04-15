@@ -314,7 +314,7 @@ const MyMachines: FC = () => {
                                         </Box>
                                     </AccordionSummary>
                                     <AccordionDetails>
-                                        <Box display={"flex"} gap="20px">
+                                        <Box display={"flex"} gap="20px" flexWrap={"wrap"} alignItems={"center"}>
                                             {coinIterationHelper.map((e) => (
                                                 <Chip
                                                     size="medium"
@@ -334,57 +334,62 @@ const MyMachines: FC = () => {
                                 </Accordion>
                             </Box>
                             <TableContainer component={Paper}>
-                                <Table aria-label="simple table">
-                                    <TableHead>
-                                        <TableRow>
-                                            <TableCell>Product</TableCell>
-                                            <TableCell align="center">Available</TableCell>
-                                            <TableCell align="center">Actions</TableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        {current.inventory.map((item) => {
-                                            const isToBeRemoved = productsToRemove.some((e) => e._id === item.item._id);
+                                {current.inventory.length > 0 && (
+                                    <Table aria-label="simple table">
+                                        <TableHead>
+                                            <TableRow>
+                                                <TableCell>Product</TableCell>
+                                                <TableCell align="center">Available</TableCell>
+                                                <TableCell align="center">Actions</TableCell>
+                                            </TableRow>
+                                        </TableHead>
+                                        <TableBody>
+                                            {current.inventory.map((item) => {
+                                                const isToBeRemoved = productsToRemove.some((e) => e._id === item.item._id);
 
-                                            return (
-                                                <TableRow key={item._id} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-                                                    <TableCell component="th" scope="row">
-                                                        {item.item.name} {isToBeRemoved ? "TO BE DELETED" : null}
-                                                    </TableCell>
-                                                    <TableCell align="center" sx={{ maxWidth: "20px" }}>
-                                                        {inventories[item.item._id]}
-                                                        {inventories[item.item._id] !== item.inventoryCount ? "*" : null}
-                                                    </TableCell>
-                                                    <TableCell align="center" sx={{ maxWidth: "20px" }}>
-                                                        <IconButton
-                                                            onClick={() => editInventory(item.item._id, inventories[item.item._id] + 1)}
-                                                            disabled={isToBeRemoved}
-                                                        >
-                                                            <AddIcon />
-                                                        </IconButton>
-                                                        <IconButton
-                                                            onClick={() => editInventory(item.item._id, inventories[item.item._id] - 1)}
-                                                            disabled={isToBeRemoved}
-                                                        >
-                                                            <RemoveIcon />
-                                                        </IconButton>
-                                                        <IconButton
-                                                            onClick={() =>
-                                                                handleRemove({ _id: item.item._id, name: item.item.name }, isToBeRemoved)
-                                                            }
-                                                        >
-                                                            <DeleteIcon />
-                                                        </IconButton>
-                                                    </TableCell>
-                                                </TableRow>
-                                            );
-                                        })}
-                                    </TableBody>
-                                </Table>
+                                                return (
+                                                    <TableRow key={item._id} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+                                                        <TableCell component="th" scope="row">
+                                                            {item.item.name} {isToBeRemoved ? "TO BE DELETED" : null}
+                                                        </TableCell>
+                                                        <TableCell align="center" sx={{ maxWidth: "20px" }}>
+                                                            {inventories[item.item._id]}
+                                                            {inventories[item.item._id] !== item.inventoryCount ? "*" : null}
+                                                        </TableCell>
+                                                        <TableCell align="center" sx={{ maxWidth: "20px" }}>
+                                                            <IconButton
+                                                                onClick={() => editInventory(item.item._id, inventories[item.item._id] + 1)}
+                                                                disabled={isToBeRemoved}
+                                                            >
+                                                                <AddIcon />
+                                                            </IconButton>
+                                                            <IconButton
+                                                                onClick={() => editInventory(item.item._id, inventories[item.item._id] - 1)}
+                                                                disabled={isToBeRemoved}
+                                                            >
+                                                                <RemoveIcon />
+                                                            </IconButton>
+                                                            <IconButton
+                                                                onClick={() =>
+                                                                    handleRemove(
+                                                                        { _id: item.item._id, name: item.item.name },
+                                                                        isToBeRemoved
+                                                                    )
+                                                                }
+                                                            >
+                                                                <DeleteIcon />
+                                                            </IconButton>
+                                                        </TableCell>
+                                                    </TableRow>
+                                                );
+                                            })}
+                                        </TableBody>
+                                    </Table>
+                                )}
                             </TableContainer>
-                            {current.inventory.length && (
-                                <Box>
-                                    <Button color="secondary" variant="outlined" onClick={handleConfirm}>
+                            {current.inventory.length > 0 && (
+                                <Box mt={2}>
+                                    <Button sx={{marginRight: "16px"}} color="secondary" variant="outlined" onClick={handleConfirm}>
                                         Confirm Changes
                                     </Button>
                                     <Button color="secondary" variant="outlined" onClick={handleReset}>
