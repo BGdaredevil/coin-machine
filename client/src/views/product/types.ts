@@ -5,7 +5,6 @@ enum Actions {
     DESCRIPTION = "description",
     IMAGE_URL = "imageUrl",
     PRICE = "price",
-    INVENTORY_COUNT = "inventoryCount",
     VALIDATE_FIELD = "validateField",
 }
 
@@ -19,7 +18,6 @@ export interface IForm {
     description: IFormField<string>;
     imageUrl: IFormField<string>;
     price: IFormField<number>;
-    inventoryCount: IFormField<number>;
 }
 
 interface ISimpleAction {

@@ -6,9 +6,7 @@ import { toastError } from "../../../utils/toast";
 import MachineFormReducer from "../utils/MachineFormReducer";
 import { createMachine } from "../../../services/machineService";
 
-interface CreateProductProps {}
-
-const CreateMachine: FC<CreateProductProps> = () => {
+const CreateMachine: FC = () => {
     const navigate = useNavigate();
 
     const [form, dispatchForm] = useReducer(MachineFormReducer.formReducer, MachineFormReducer.getInitForm());
@@ -32,9 +30,7 @@ const CreateMachine: FC<CreateProductProps> = () => {
             return;
         }
 
-        createMachine({
-            name: form.name.value,
-        })
+        createMachine({ name: form.name.value })
             .then(() => {
                 setSubmitting(false);
                 navigate(`${PrivateRoutes.MACHINE}`);

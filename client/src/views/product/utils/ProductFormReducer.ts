@@ -7,7 +7,6 @@ const initialEmptyForm: IForm = {
     name: { value: "", error: false, touched: false, errorMessage: "" },
     description: { value: "", error: false, touched: false, errorMessage: "" },
     imageUrl: { value: "", error: false, touched: false, errorMessage: "" },
-    inventoryCount: { value: 0, error: false, touched: false, errorMessage: "" },
     price: { value: 0, error: false, touched: false, errorMessage: "" },
 };
 
@@ -16,7 +15,6 @@ const getInitForm = () => {
         name: { ...initialEmptyForm.name },
         description: { ...initialEmptyForm.description },
         imageUrl: { ...initialEmptyForm.imageUrl },
-        inventoryCount: { ...initialEmptyForm.inventoryCount },
         price: { ...initialEmptyForm.price },
     };
 };
@@ -51,13 +49,6 @@ const formReducer = (state: IForm, action: IAction): IForm => {
             return { ...state, price: nextFieldState };
         }
 
-        case "inventoryCount": {
-            const nextFieldState: IForm["inventoryCount"] = { ...state.inventoryCount, error: false, errorMessage: "" };
-            nextFieldState.value = Number(action.payload!);
-
-            return { ...state, inventoryCount: nextFieldState };
-        }
-
         case "validateAll": {
             const nextState = { ...state };
 
@@ -69,8 +60,6 @@ const formReducer = (state: IForm, action: IAction): IForm => {
             validators.isNotPattern(nextState.imageUrl, "Please enter a valid URL", URL_PATTERN);
             validators.required(nextState.price, "Price is required");
             validators.min(nextState.price, "Price should be a positive number", 0);
-            validators.required(nextState.inventoryCount, "Inventory Count is required");
-            validators.min(nextState.inventoryCount, "Inventory Count should be a positive number", 0);
 
             return nextState;
         }
@@ -84,6 +73,7 @@ const formReducer = (state: IForm, action: IAction): IForm => {
 
                     return { ...state, name: nextState };
                 }
+
                 case "description": {
                     const nextState = { ...state.description };
                     validators.required(nextState, "Description is required");
@@ -91,6 +81,7 @@ const formReducer = (state: IForm, action: IAction): IForm => {
 
                     return { ...state, description: nextState };
                 }
+
                 case "imageUrl": {
                     const nextState = { ...state.imageUrl };
                     validators.required(nextState, "Image URL is required");
@@ -98,19 +89,13 @@ const formReducer = (state: IForm, action: IAction): IForm => {
 
                     return { ...state, imageUrl: nextState };
                 }
+
                 case "price": {
                     const nextState = { ...state.price };
                     validators.required(nextState, "Price is required");
                     validators.min(nextState, "Price should be a positive number", 0);
 
                     return { ...state, price: nextState };
-                }
-                case "inventoryCount": {
-                    const nextState = { ...state.inventoryCount };
-                    validators.required(nextState, "Inventory Count is required");
-                    validators.min(nextState, "Inventory Count should be a positive number", 0);
-
-                    return { ...state, inventoryCount: nextState };
                 }
 
                 default:
@@ -121,13 +106,11 @@ const formReducer = (state: IForm, action: IAction): IForm => {
         case "reset": {
             const blankStrField = { value: "", error: false, touched: false, errorMessage: "" };
             const blankNumberField = { value: 0, error: false, touched: false, errorMessage: "" };
-
             const actionPayload = action.payload as IProuduct | undefined;
 
             return {
                 description: { ...blankStrField, value: actionPayload?.description || "" },
                 imageUrl: { ...blankStrField, value: actionPayload?.imageUrl || "" },
-                inventoryCount: { ...blankNumberField, value: actionPayload?.inventoryCount || 0 },
                 name: { ...blankStrField, value: actionPayload?.name || "" },
                 price: { ...blankNumberField, value: actionPayload?.price || 0 },
             };

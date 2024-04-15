@@ -2,42 +2,41 @@ import { FC, useContext } from "react";
 import { AuthContext } from "../contexts/Auth";
 import { PrivateRoutes, PublicRoutes } from "../config/appEnums";
 import { NavLink } from "react-router-dom";
+import { Typography } from "@mui/material";
 
-interface NavProps {}
-
-const Nav: FC<NavProps> = () => {
+const Nav: FC = () => {
     const { isAuth, logout } = useContext(AuthContext);
 
     return (
         <>
             <NavLink to={PublicRoutes.BASE_PATH}>
-                <p style={{ margin: 0 }}>home</p>
+                <Typography variant="body1">home</Typography>
             </NavLink>
             {isAuth ? (
                 <>
                     <NavLink to={`${PrivateRoutes.PRODUCT}`}>
-                        <p style={{ margin: 0 }}>my products</p>
+                        <Typography variant="body1">my products</Typography>
                     </NavLink>
                     <NavLink to={`${PrivateRoutes.PRODUCT}${PrivateRoutes.CREATE}`}>
-                        <p style={{ margin: 0 }}>add product</p>
+                        <Typography variant="body1">add product</Typography>
                     </NavLink>
                     <NavLink to={`${PrivateRoutes.MACHINE}`}>
-                        <p style={{ margin: 0 }}>my machines</p>
+                        <Typography variant="body1">my machines</Typography>
                     </NavLink>
                     <NavLink to={`${PrivateRoutes.MACHINE}${PrivateRoutes.CREATE}`}>
-                        <p style={{ margin: 0 }}>add machine</p>
+                        <Typography variant="body1">add machine</Typography>
                     </NavLink>
                     <NavLink to={PublicRoutes.BASE_PATH} onClick={logout}>
-                        <p style={{ margin: 0 }}>logout</p>
+                        <Typography variant="body1">logout</Typography>
                     </NavLink>
                 </>
             ) : (
                 <>
                     <NavLink to={PublicRoutes.LOGIN}>
-                        <p style={{ margin: 0 }}>login</p>
+                        <Typography variant="body1">login</Typography>
                     </NavLink>
                     <NavLink to={PublicRoutes.REGISTER}>
-                        <p style={{ margin: 0 }}>register</p>
+                        <Typography variant="body1">register</Typography>
                     </NavLink>
                 </>
             )}

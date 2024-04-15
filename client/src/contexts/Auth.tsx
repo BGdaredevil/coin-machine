@@ -35,7 +35,6 @@ const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
             const response = await registerUser(data);
 
             setUser({ id: response.id, email: response.email });
-
             cookies.set(AUTH_COOKIE_KEY, response.id);
             cookies.set(AUTH_COOKIE_TOKEN_KEY, response.token);
         } catch (err: any) {
@@ -91,12 +90,7 @@ const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
         if (personId) {
             const controller = new AbortController();
             getUserData(personId, { signal: controller.signal })
-                .then((personData) =>
-                    setUser({
-                        id: personData.id,
-                        email: personData.email,
-                    })
-                )
+                .then((personData) => setUser({ id: personData.id, email: personData.email }))
                 .catch(isCancelledErrorProcessor)
                 .catch(() => {
                     setUser(null);

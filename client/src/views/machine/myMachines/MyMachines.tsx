@@ -60,7 +60,6 @@ const MyMachines: FC = () => {
         }
 
         addProducts(machineId, { productsToAdd: productsToAdd.map((e) => e._id) }).then((res: IMachine) => {
-            // console.log(res);
             setProductsToAdd([]);
             setProducts((prev) => {
                 const ids = res.inventory.map((e) => e.item._id);
@@ -89,7 +88,6 @@ const MyMachines: FC = () => {
 
         editMachineProducts(machineId, { inventoryChanges: inventories, productsToRemove: productsToRemove.map((e) => e._id) }).then(
             (res) => {
-                // console.log(res);
                 setProducts((prev) => [...prev, ...productsToRemove]);
                 setProductsToRemove([]);
                 toastSuccess("Products Updated");
@@ -209,6 +207,7 @@ const MyMachines: FC = () => {
                                 label={"Select Machine"}
                                 placeholder={"Select Machine"}
                                 variant={"standard"}
+                                color="secondary"
                                 required
                                 error={false}
                                 helperText={" "}
@@ -257,6 +256,7 @@ const MyMachines: FC = () => {
                                 <FormControl fullWidth sx={{ marginTop: 0 }}>
                                     <TextField
                                         {...params}
+                                        color="secondary"
                                         label={"Products to ADD"}
                                         placeholder={"Products to ADD"}
                                         variant={"standard"}

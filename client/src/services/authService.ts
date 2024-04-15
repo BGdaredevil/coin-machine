@@ -14,4 +14,6 @@ export const getUserData = (userId: IUserResponse["id"], config: RequestInit): P
     return ApiService.get(`${endpoints.userApi}/${userId}`, config);
 };
 
-export const serverLogout = (): Promise<void> => ApiService.get(`${endpoints.userApi}/logout`);
+export const serverLogout = (): Promise<void> => {
+    return ApiService.get(`${endpoints.userApi}/logout`);
+};

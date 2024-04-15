@@ -7,9 +7,7 @@ import { getMachine, getPublicMachines } from "../../services/machineService";
 import PurchaseDialog from "./PurchaseDialog/PurchaseDialog";
 import { isCancelledErrorProcessor } from "../../services/apiService";
 
-interface MachineHomeProps {}
-
-const MachineHome: FC<MachineHomeProps> = () => {
+const MachineHome: FC = () => {
     const [params, setParams] = useSearchParams();
     const machineId = params.get(MACHINE_KEY);
 
@@ -43,9 +41,7 @@ const MachineHome: FC<MachineHomeProps> = () => {
         const controller = new AbortController();
 
         getPublicMachines({ signal: controller.signal })
-            .then((res) => {
-                setMachines(res);
-            })
+            .then((res) => setMachines(res))
             .catch(isCancelledErrorProcessor);
 
         return () => controller.abort();
@@ -81,6 +77,7 @@ const MachineHome: FC<MachineHomeProps> = () => {
                                 label={"Select Machine"}
                                 placeholder={"Select Machine"}
                                 variant={"standard"}
+                                color="secondary"
                                 required
                                 error={false}
                                 helperText={" "}

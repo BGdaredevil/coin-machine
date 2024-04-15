@@ -29,7 +29,6 @@ const EditProduct: FC<EditProductProps> = ({ dialogTitle, onCancel, onClose, onS
                     id: product._id,
                     description: product.description,
                     imageUrl: product.imageUrl,
-                    inventoryCount: product.inventoryCount,
                     name: product.name,
                     price: product.price,
                 } as IProuduct,
@@ -48,7 +47,6 @@ const EditProduct: FC<EditProductProps> = ({ dialogTitle, onCancel, onClose, onS
                     id: product._id,
                     description: product.description,
                     imageUrl: product.imageUrl,
-                    inventoryCount: product.inventoryCount,
                     name: product.name,
                     price: product.price,
                 } as IProuduct,
@@ -68,7 +66,6 @@ const EditProduct: FC<EditProductProps> = ({ dialogTitle, onCancel, onClose, onS
                 id: product._id,
                 description: product.description,
                 imageUrl: product.imageUrl,
-                inventoryCount: product.inventoryCount,
                 name: product.name,
                 price: product.price,
             } as IProuduct,
@@ -91,7 +88,6 @@ const EditProduct: FC<EditProductProps> = ({ dialogTitle, onCancel, onClose, onS
             id: product._id,
             description: form.description.value,
             imageUrl: form.imageUrl.value,
-            inventoryCount: form.inventoryCount.value,
             name: form.name.value,
             price: form.price.value,
         })
@@ -107,7 +103,6 @@ const EditProduct: FC<EditProductProps> = ({ dialogTitle, onCancel, onClose, onS
                         id: product._id,
                         description: product.description,
                         imageUrl: product.imageUrl,
-                        inventoryCount: product.inventoryCount,
                         name: product.name,
                         price: product.price,
                     } as IProuduct,
@@ -168,22 +163,7 @@ const EditProduct: FC<EditProductProps> = ({ dialogTitle, onCancel, onClose, onS
                     type="text"
                     fullWidth
                 />
-                <TextField
-                    value={form.inventoryCount.value}
-                    error={form.inventoryCount.error}
-                    helperText={form.inventoryCount.errorMessage || " "}
-                    sx={{ marginBottom: "8px" }}
-                    onChange={(e) => dispatchForm({ payload: e.target.value, type: "inventoryCount" })}
-                    onBlur={() => dispatchForm({ type: "validateField", payload: "inventoryCount" })}
-                    variant="standard"
-                    color="secondary"
-                    id="inventory-count-input"
-                    label="Inventory Count"
-                    placeholder="Inventory Count"
-                    type="number"
-                    inputProps={{ step: 1, min: 0 }}
-                    fullWidth
-                />
+
                 <TextField
                     value={form.price.value}
                     error={form.price.error}
@@ -203,7 +183,6 @@ const EditProduct: FC<EditProductProps> = ({ dialogTitle, onCancel, onClose, onS
             </DialogContent>
             <DialogActions>
                 <Button onClick={cancel}>Cancel</Button>
-                {/* <Button onClick={handleSubmit(submitForm)}>Confirm</Button> */}
                 <Button
                     onClick={() => {
                         dispatchForm({ type: "validateAll" });

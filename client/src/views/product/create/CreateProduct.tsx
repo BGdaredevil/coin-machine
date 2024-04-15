@@ -35,7 +35,6 @@ const CreateProduct: FC<CreateProductProps> = () => {
         createProduct({
             description: form.description.value,
             imageUrl: form.imageUrl.value,
-            inventoryCount: form.inventoryCount.value,
             name: form.name.value,
             price: form.price.value,
         })
@@ -92,21 +91,6 @@ const CreateProduct: FC<CreateProductProps> = () => {
                 label="Product Image"
                 placeholder="Product Image"
                 type="text"
-                fullWidth
-            />
-            <TextField
-                value={form.inventoryCount.value}
-                error={form.inventoryCount.error}
-                helperText={form.inventoryCount.errorMessage}
-                onChange={(e) => dispatchForm({ payload: e.target.value, type: "inventoryCount" })}
-                onBlur={() => dispatchForm({ type: "validateField", payload: "inventoryCount" })}
-                variant="standard"
-                color="secondary"
-                id="inventory-count-input"
-                label="Inventory Count"
-                placeholder="Inventory Count"
-                type="number"
-                inputProps={{ step: 1, min: 0 }}
                 fullWidth
             />
             <TextField

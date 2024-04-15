@@ -23,7 +23,6 @@ export interface IProuduct {
     description: string;
     imageUrl: string;
     price: number;
-    inventoryCount: number;
 }
 
 export interface IApiProduct {
@@ -32,7 +31,6 @@ export interface IApiProduct {
     description: string;
     imageUrl: string;
     price: number;
-    inventoryCount: number;
     owner: string;
     createdAt: string;
     updatedAt: string;

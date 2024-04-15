@@ -6,7 +6,6 @@ enum Routes {
     MACHINE = "/machine",
     CREATE = "/create",
     EDIT = "/edit/:id",
-    ID = "/:id",
 }
 
 export enum PublicRoutes {
@@ -19,5 +18,4 @@ export enum PrivateRoutes {
     PRODUCT = Routes.PRODUCT,
     MACHINE = Routes.MACHINE,
     CREATE = Routes.CREATE,
-    EDIT = Routes.EDIT,
 }

@@ -22,9 +22,7 @@ const PersonalProductsCatalog: FC<PersonalProductsCatalogProps> = () => {
         const controller = new AbortController();
 
         listPersonalProducts({ signal: controller.signal })
-            .then((res) => {
-                setProducts(res);
-            })
+            .then((res) => setProducts(res))
             .catch(isCancelledErrorProcessor);
 
         return () => controller.abort();
@@ -64,9 +62,6 @@ const PersonalProductsCatalog: FC<PersonalProductsCatalogProps> = () => {
                             <CardContent>
                                 <Typography gutterBottom variant="h5" component="div">
                                     {product.name}
-                                </Typography>
-                                <Typography gutterBottom variant="body1" component="div">
-                                    {product.inventoryCount} available at {product.price} EUR/pcs
                                 </Typography>
                                 <Typography variant="body2" color="text.secondary">
                                     {product.description}

@@ -47,7 +47,6 @@ const formReducer = (state: IForm, action: IAction): IForm => {
 
         case "reset": {
             const blankStrField = { value: "", error: false, touched: false, errorMessage: "" };
-
             const actionPayload = action.payload as IProuduct | undefined;
 
             return {
