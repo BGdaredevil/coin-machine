@@ -6,13 +6,15 @@ import { Box } from "@mui/material";
 
 const MainLayout: FC = () => {
     return (
-        <Box style={{ border: "1px solid red", maxWidth: "1200px", margin: "0 auto", padding: "20px" }}>
-            <Box style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "20px", marginBottom: "20px" }}>
+        <>
+            <Nav />
+            <Box style={{ border: "1px solid red", maxWidth: "1200px", margin: "0 auto" }}>
                 <ToastContainer />
-                <Nav />
+                <Box padding="20px">
+                    <Outlet />
+                </Box>
             </Box>
-            <Outlet />
-        </Box>
+        </>
     );
 };
 

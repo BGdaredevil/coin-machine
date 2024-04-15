@@ -12,17 +12,20 @@ import MachineHome from "../views/home/MachineHome";
 import CreateMachine from "../views/machine/create/CreateMachine";
 import MyMachines from "../views/machine/myMachines/MyMachines";
 import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
+import { Box } from "@mui/material";
 
 const router = createBrowserRouter(
     createRoutesFromChildren(
         <Route
             path={PublicRoutes.BASE_PATH}
             element={
-                <ErrorBoundary>
-                    <AuthListener>
-                        <MainLayout />
-                    </AuthListener>
-                </ErrorBoundary>
+                <Box sx={{ bgcolor: "background.default", height: "100vh", overflow: "auto", scrollbarWidth: "thin" }}>
+                    <ErrorBoundary>
+                        <AuthListener>
+                            <MainLayout />
+                        </AuthListener>
+                    </ErrorBoundary>
+                </Box>
             }
         >
             <Route index element={<MachineHome />} />
