@@ -74,6 +74,7 @@ const PersonalProductsCatalog: FC<PersonalProductsCatalogProps> = () => {
                                     sx={{ marginLeft: "auto" }}
                                     variant="outlined"
                                     size="small"
+                                    color="secondary"
                                     onClick={() => setSelectedproduct(product)}
                                 >
                                     Edit

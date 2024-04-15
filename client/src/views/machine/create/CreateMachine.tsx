@@ -58,7 +58,7 @@ const CreateMachine: FC = () => {
                 type="text"
                 fullWidth
             />
-            <Button type="submit" variant="outlined">
+            <Button color="secondary" type="submit" variant="outlined">
                 submit
             </Button>
         </Box>

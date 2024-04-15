@@ -92,7 +92,7 @@ const Login: FC = () => {
                         ),
                     }}
                 />
-                <Button type="submit" variant="outlined">
+                <Button type="submit" variant="outlined" color="secondary">
                     submit
                 </Button>
             </Box>

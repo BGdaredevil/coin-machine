@@ -247,8 +247,12 @@ const PurchaseDialog: FC<PurchaseDialogProps> = ({
                 </Grid>
             </DialogContent>
             <DialogActions>
-                <Button onClick={cancel}>Cancel</Button>
-                <Button onClick={confirm}>Confirm</Button>
+                <Button color="secondary" onClick={cancel}>
+                    Cancel
+                </Button>
+                <Button color="secondary" onClick={confirm}>
+                    Confirm
+                </Button>
             </DialogActions>
         </Dialog>
     );

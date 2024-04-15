@@ -41,6 +41,7 @@ class ErrorBoundary extends Component<PropsWithChildren<any>, State> {
                                 sx={{ marginLeft: "auto" }}
                                 variant="outlined"
                                 size="small"
+                                color="secondary"
                                 onClick={() => (window.location.href = "/")}
                             >
                                 Try Again ?

@@ -384,10 +384,10 @@ const MyMachines: FC = () => {
                             </TableContainer>
                             {current.inventory.length && (
                                 <Box>
-                                    <Button variant="outlined" onClick={handleConfirm}>
+                                    <Button color="secondary" variant="outlined" onClick={handleConfirm}>
                                         Confirm Changes
                                     </Button>
-                                    <Button variant="outlined" onClick={handleReset}>
+                                    <Button color="secondary" variant="outlined" onClick={handleReset}>
                                         Reset
                                     </Button>
                                 </Box>

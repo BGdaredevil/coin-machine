@@ -101,8 +101,11 @@ const EditMachine: FC<EditMachineProps> = ({ dialogTitle, onCancel, onClose, onS
                 />
             </DialogContent>
             <DialogActions>
-                <Button onClick={cancel}>Cancel</Button>
+                <Button color="secondary" onClick={cancel}>
+                    Cancel
+                </Button>
                 <Button
+                    color="secondary"
                     onClick={() => {
                         dispatchForm({ type: "validateAll" });
                         setSubmitting(true);

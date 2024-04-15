@@ -132,6 +132,7 @@ const MachineHome: FC = () => {
                                 <Button
                                     sx={{ marginLeft: "auto" }}
                                     variant="outlined"
+                                    color="secondary"
                                     size="small"
                                     onClick={() => {
                                         setSelectedProduct({ inventoryCount, item: product });
