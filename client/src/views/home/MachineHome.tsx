@@ -5,6 +5,7 @@ import { useSearchParams } from "react-router-dom";
 import { MACHINE_KEY } from "../../config/appConstants";
 import { getMachine, getPublicMachines } from "../../services/machineService";
 import PurchaseDialog from "./PurchaseDialog/PurchaseDialog";
+import { isCancelledErrorProcessor } from "../../services/apiService";
 
 interface MachineHomeProps {}
 
@@ -26,11 +27,13 @@ const MachineHome: FC<MachineHomeProps> = () => {
 
         const controller = new AbortController();
 
-        getMachine(machineId, { signal: controller.signal }).then((res) => {
-            // setCurrent(res);
-            setSelectedMachine({ _id: res._id, name: res.name });
-            setActiveMachine(res);
-        });
+        getMachine(machineId, { signal: controller.signal })
+            .then((res) => {
+                // setCurrent(res);
+                setSelectedMachine({ _id: res._id, name: res.name });
+                setActiveMachine(res);
+            })
+            .catch(isCancelledErrorProcessor);
 
         return () => controller.abort();
     }, [machineId]);
@@ -38,9 +41,11 @@ const MachineHome: FC<MachineHomeProps> = () => {
     useEffect(() => {
         const controller = new AbortController();
 
-        getPublicMachines({ signal: controller.signal }).then((res) => {
-            setMachines(res);
-        });
+        getPublicMachines({ signal: controller.signal })
+            .then((res) => {
+                setMachines(res);
+            })
+            .catch(isCancelledErrorProcessor);
 
         return () => controller.abort();
     }, []);

@@ -19,6 +19,7 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import ReplayIcon from "@mui/icons-material/Replay";
 import coinReducer from "./coinReducer";
 import { coinIterationHelper } from "./typesUtils";
+import { toastSuccess, toastWarning } from "../../../utils/toast";
 
 interface PurchaseDialogProps {
     machine: Omit<IMachine, "owner">;
@@ -53,7 +54,32 @@ const PurchaseDialog: FC<PurchaseDialogProps> = ({
         onCancel();
     };
     const confirm = () => {
-        onSubmit({});
+        const remaining = form.total - form.insertedValue;
+
+        if (remaining > 0) {
+            toastWarning(`Please insert an additional ${(Math.round(remaining * 100) / 100).toFixed(2)} EUR`);
+            return;
+        }
+
+        const purchaseResult = coinReducer.getChangeCoins(machine, form);
+
+        if (!purchaseResult.canReturnAllChange) {
+            toastWarning(
+                `sorry, the machine does not have enough coins to return  ${purchaseResult.missingFunds} EUR in change. Returning all user coins`
+            );
+            dispatchForm({
+                type: "reset",
+                payload: {
+                    productPrice: product.price,
+                    productQuantity: 1,
+                    total: product.price,
+                },
+            });
+
+            return;
+        }
+
+        onSubmit(purchaseResult);
     };
 
     return (
@@ -98,6 +124,7 @@ const PurchaseDialog: FC<PurchaseDialogProps> = ({
                                         <AddIcon />
                                     </IconButton>
                                     <IconButton
+                                        disabled={form.productQuantity - 1 < 0}
                                         onClick={() => dispatchForm({ type: "setProductQuantity", payload: form.productQuantity - 1 })}
                                     >
                                         <RemoveIcon />
@@ -106,7 +133,7 @@ const PurchaseDialog: FC<PurchaseDialogProps> = ({
                             </Box>
                             {coinIterationHelper.map((coin) => {
                                 return (
-                                    <Box sx={{ display: "flex", alignItems: "center" }}>
+                                    <Box key={coin.field} sx={{ display: "flex", alignItems: "center" }}>
                                         <Box sx={{ flexGrow: 1, maxWidth: "80px" }}>
                                             <Typography variant="body1">{coin.value}</Typography>
                                         </Box>
@@ -125,6 +152,7 @@ const PurchaseDialog: FC<PurchaseDialogProps> = ({
                                                 <AddIcon />
                                             </IconButton>
                                             <IconButton
+                                                disabled={form[coin.field] - 1 < 0}
                                                 onClick={() =>
                                                     dispatchForm({
                                                         type: "setCoin",

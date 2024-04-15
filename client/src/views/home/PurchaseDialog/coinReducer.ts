@@ -1,3 +1,5 @@
+import { IMachine } from "../../../utils/commonTypes";
+
 const initialState = {
     productQuantity: 0,
     insertedValue: 0,
@@ -125,7 +127,58 @@ const coinReducer = (state: IForm, action: IAction): IForm => {
     }
 };
 
+const getChangeCoins = (machine: Omit<IMachine, "owner">, currentState: IForm) => {
+    const valueToReturn = Math.round((currentState.insertedValue - currentState.total) * 100) / 100;
+    let calculationValue = valueToReturn;
+
+    const coinFieldNames = ["twoDCoin", "oneDCoin", "fiftyCCoin", "twentyCCoin", "tenCCoin", "fiveCCoin", "twoCCoin", "oneCCoin"] as const;
+
+    const coinValues = coinFieldNames.map((field) => coinValueMap[field]);
+    const machineAvailableCoins = coinFieldNames.map((field) => machine[field]);
+    // const userGivenCoins = coinFieldNames.map((field) => currentState[field]);
+
+    // machineAvailableCoins[0] = 0;
+    // machineAvailableCoins[1] = 0;
+    // machineAvailableCoins[2] = 0;
+    // machineAvailableCoins[3] = 0;
+    // machineAvailableCoins[4] = 0;
+    // machineAvailableCoins[5] = 0;
+    // machineAvailableCoins[6] = 0;
+    // machineAvailableCoins[7] = 0;
+
+    const neededCoins = new Array(coinValues.length).fill(0);
+
+    for (let i = 0; i < coinValues.length; i++) {
+        const currentCoinValue = coinValues[i];
+
+        while (calculationValue >= currentCoinValue) {
+            neededCoins[i] += 1;
+            calculationValue = Math.round((calculationValue - currentCoinValue) * 100) / 100;
+
+            if (neededCoins[i] > machineAvailableCoins[i]) {
+                neededCoins[i] -= 1;
+                calculationValue = Math.round((calculationValue + currentCoinValue) * 100) / 100;
+
+                break;
+            }
+        }
+    }
+
+    return {
+        canReturnAllChange: calculationValue == 0,
+        missingFunds: calculationValue,
+        neededCoins: neededCoins
+            .map((count, i) => ({
+                count: count,
+                coin: coinValues[i],
+                field: coinFieldNames[i],
+            }))
+            .filter((e) => e.count > 0),
+    };
+};
+
 export default {
     initialState,
+    getChangeCoins,
     coinReducer,
 };
