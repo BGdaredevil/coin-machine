@@ -101,7 +101,8 @@ const MachineHome: FC<MachineHomeProps> = () => {
                         setOpenModal(false);
                         setSelectedProduct(null);
                     }}
-                    onSubmit={() => {
+                    onSubmit={(data) => {
+                        setActiveMachine(data);
                         setOpenModal(false);
                         setSelectedProduct(null);
                     }}
@@ -121,8 +122,9 @@ const MachineHome: FC<MachineHomeProps> = () => {
                                 <Typography gutterBottom variant="h5" component="div">
                                     {product.name}
                                 </Typography>
+
                                 <Typography gutterBottom variant="body1" component="div">
-                                    {inventoryCount} available at {product.price} EUR/pcs
+                                    {inventoryCount ? `${inventoryCount} available at ${product.price} EUR/pcs` : "OUT OF STOCK"}
                                 </Typography>
                                 <Typography variant="body2" color="text.secondary">
                                     {product.description}

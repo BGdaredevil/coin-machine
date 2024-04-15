@@ -153,14 +153,14 @@ const getChangeCoins = (machine: Omit<IMachine, "owner">, currentState: IForm) =
 
         while (calculationValue >= currentCoinValue) {
             neededCoins[i] += 1;
-            calculationValue = Math.round((calculationValue - currentCoinValue) * 100) / 100;
 
             if (neededCoins[i] > machineAvailableCoins[i]) {
                 neededCoins[i] -= 1;
-                calculationValue = Math.round((calculationValue + currentCoinValue) * 100) / 100;
 
                 break;
             }
+
+            calculationValue = Math.round((calculationValue - currentCoinValue) * 100) / 100;
         }
     }
 

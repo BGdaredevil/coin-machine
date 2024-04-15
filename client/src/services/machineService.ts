@@ -24,6 +24,10 @@ export const addProducts = (id: string, dto: any, config?: RequestInit): Promise
     return ApiService.put(`${endpoints.machineApi}/inventory/${id}/add-products`, dto, config);
 };
 
+export const purchaseProduct = (machineId: string, productId: string, dto: any, config?: RequestInit): Promise<any> => {
+    return ApiService.put(`${endpoints.machineApi}/purchase/${machineId}/${productId}`, dto, config);
+};
+
 export const refillCoins = (id: string, dto: ICoinsRefillDto, config?: RequestInit): Promise<any> => {
     return ApiService.put(`${endpoints.machineApi}/coins/${id}/refill`, dto, config);
 };

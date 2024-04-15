@@ -19,7 +19,8 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import ReplayIcon from "@mui/icons-material/Replay";
 import coinReducer from "./coinReducer";
 import { coinIterationHelper } from "./typesUtils";
-import { toastSuccess, toastWarning } from "../../../utils/toast";
+import { toastError, toastSuccess, toastWarning } from "../../../utils/toast";
+import { purchaseProduct } from "../../../services/machineService";
 
 interface PurchaseDialogProps {
     machine: Omit<IMachine, "owner">;
@@ -61,6 +62,16 @@ const PurchaseDialog: FC<PurchaseDialogProps> = ({
             return;
         }
 
+        if (form.productQuantity == 0) {
+            toastWarning(`Please select product quantity`);
+            return;
+        }
+
+        if (form.productQuantity > inventoryCount) {
+            toastWarning(`Only ${inventoryCount} pcs are available`);
+            return;
+        }
+
         const purchaseResult = coinReducer.getChangeCoins(machine, form);
 
         if (!purchaseResult.canReturnAllChange) {
@@ -79,7 +90,50 @@ const PurchaseDialog: FC<PurchaseDialogProps> = ({
             return;
         }
 
-        onSubmit(purchaseResult);
+        purchaseProduct(machine._id, product._id, {
+            qty: form.productQuantity,
+            userAddedCoins: {
+                twoDCoin: form.twoDCoin,
+                oneDCoin: form.oneDCoin,
+                fiftyCCoin: form.fiftyCCoin,
+                twentyCCoin: form.twentyCCoin,
+                tenCCoin: form.tenCCoin,
+                fiveCCoin: form.fiveCCoin,
+                twoCCoin: form.twoCCoin,
+                oneCCoin: form.oneCCoin,
+            },
+        })
+            .then((res) => {
+                toastSuccess(
+                    <>
+                        <Typography variant="body1" color="text.secondary" sx={{ color: "inherit" }}>
+                            Thank you for your purchase! Your change is:
+                        </Typography>
+                        {purchaseResult.neededCoins.map((e) => (
+                            <Typography key={`${e.coin}x${e.count}`} variant="body2" color="text.secondary" sx={{ color: "inherit" }}>
+                                {`${e.coin} EUR x ${e.count}`}
+                            </Typography>
+                        ))}
+                    </>
+                );
+                const updatedMachine = { ...res, owner: res.owner._id };
+                onSubmit(updatedMachine);
+            })
+            .catch((err) => {
+                switch (err.type) {
+                    case "no-such-product":
+                    case "no-inventory":
+                    case "no-enough-paid":
+                    case "no-enough-coins":
+                        toastError(err.message);
+                        return;
+
+                    default:
+                        throw err;
+                }
+            });
+
+        return;
     };
 
     return (
