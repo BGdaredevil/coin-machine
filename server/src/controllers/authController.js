@@ -77,13 +77,13 @@ router.post("/login", AuthMiddleware.isGuest, async (req, res) => {
 
 router.get("/logout", (req, res) => {
     res.clearCookie(cookie_name);
-    res.status(200).json({ type: "message", message: "sucess" });
+    res.status(200).json({ type: "message", message: "success" });
 });
 
 router.get("/:id", AuthMiddleware.isAuth, async (req, res) => {
     try {
         if (req.user.id !== req.params.id) {
-            throw new Errror("user tries to access another");
+            throw new Error("user tries to access another");
         }
 
         const person = await authService.getUser(req.params.id);
