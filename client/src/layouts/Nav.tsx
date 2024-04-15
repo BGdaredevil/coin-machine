@@ -1,7 +1,7 @@
 import { FC, useContext, useRef, useState } from "react";
 import { AuthContext } from "../contexts/Auth";
 import { PrivateRoutes, PublicRoutes } from "../config/appEnums";
-import { AppBar, Button, Container, IconButton, Link, Menu, MenuItem, Toolbar, Typography, styled, useMediaQuery } from "@mui/material";
+import { AppBar, Container, IconButton, Menu, MenuItem, Toolbar, Typography, useMediaQuery } from "@mui/material";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -13,12 +13,13 @@ const guestRoutes = [
     { to: PublicRoutes.LOGIN, name: "login" },
     { to: PublicRoutes.REGISTER, name: "register" },
 ];
+
 const userRoutes = [
-    { name: "my products", to: `${PrivateRoutes.PRODUCT}` },
-    { name: "add product", to: `${PrivateRoutes.PRODUCT}${PrivateRoutes.CREATE}` },
-    { name: "my machines", to: `${PrivateRoutes.MACHINE}` },
-    { name: "add machine", to: `${PrivateRoutes.MACHINE}${PrivateRoutes.CREATE}` },
-    { name: "logout", to: PublicRoutes.BASE_PATH },
+    { to: `${PrivateRoutes.PRODUCT}`, name: "my products" },
+    { to: `${PrivateRoutes.PRODUCT}${PrivateRoutes.CREATE}`, name: "add product" },
+    { to: `${PrivateRoutes.MACHINE}`, name: "my machines" },
+    { to: `${PrivateRoutes.MACHINE}${PrivateRoutes.CREATE}`, name: "add machine" },
+    { to: PublicRoutes.BASE_PATH, name: "logout" },
 ];
 
 const Nav: FC = () => {
@@ -61,7 +62,7 @@ const Nav: FC = () => {
                     {smallScreen ? (
                         <Menu anchorEl={menuAnchor.current} open={openMenu} onClose={() => setOpenMenu(false)}>
                             <MenuItem color="inherit" onClick={() => closeMenu(PublicRoutes.BASE_PATH)}>
-                                <Typography style={{ color: "inherit", marginRight: "10px" }} textTransform="uppercase" variant="body1">
+                                <Typography style={{ color: "inherit" }} textTransform="uppercase" variant="body1">
                                     home
                                 </Typography>
                             </MenuItem>
@@ -73,26 +74,22 @@ const Nav: FC = () => {
                                           href={e.to}
                                           onClick={e.name === "logout" ? menuLogout : () => closeMenu(e.to)}
                                       >
-                                          <NavLink style={{ textDecoration: "none", color: "inherit", marginRight: "10px" }} to={e.to}>
-                                              <Typography textTransform="uppercase" variant="body1">
-                                                  {e.name}
-                                              </Typography>
-                                          </NavLink>
+                                          <Typography textTransform="uppercase" variant="body1">
+                                              {e.name}
+                                          </Typography>
                                       </MenuItem>
                                   ))
                                 : guestRoutes.map((e) => (
                                       <MenuItem key={e.name + e.to} color="inherit" onClick={() => closeMenu(e.to)}>
-                                          <NavLink style={{ textDecoration: "none", color: "inherit", marginRight: "10px" }} to={e.to}>
-                                              <Typography textTransform="uppercase" variant="body1">
-                                                  {e.name}
-                                              </Typography>
-                                          </NavLink>
+                                          <Typography textTransform="uppercase" variant="body1">
+                                              {e.name}
+                                          </Typography>
                                       </MenuItem>
                                   ))}
                         </Menu>
                     ) : (
                         <>
-                            <NavLink style={{ textDecoration: "none", color: "inherit", marginRight: "10px" }} to={PublicRoutes.BASE_PATH}>
+                            <NavLink style={{ textDecoration: "none", color: "inherit", marginRight: "20px" }} to={PublicRoutes.BASE_PATH}>
                                 <Typography color="inherit" textTransform="uppercase" variant="body2">
                                     home
                                 </Typography>
@@ -101,7 +98,7 @@ const Nav: FC = () => {
                                 ? userRoutes.map((e) => (
                                       <NavLink
                                           key={e.name + e.to}
-                                          style={{ textDecoration: "none", color: "inherit", marginRight: "10px" }}
+                                          style={{ textDecoration: "none", color: "inherit", marginRight: "20px" }}
                                           to={e.to}
                                           onClick={e.name === "logout" ? logout : undefined}
                                       >
@@ -113,7 +110,7 @@ const Nav: FC = () => {
                                 : guestRoutes.map((e) => (
                                       <NavLink
                                           key={e.name + e.to}
-                                          style={{ textDecoration: "none", color: "inherit", marginRight: "10px" }}
+                                          style={{ textDecoration: "none", color: "inherit", marginRight: "20px" }}
                                           to={e.to}
                                       >
                                           <Typography color="inherit" textTransform="uppercase" variant="body2">

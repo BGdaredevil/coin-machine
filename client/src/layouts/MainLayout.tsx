@@ -8,7 +8,7 @@ const MainLayout: FC = () => {
     return (
         <>
             <Nav />
-            <Box style={{ border: "1px solid red", maxWidth: "1200px", margin: "0 auto" }}>
+            <Box style={{ maxWidth: "1200px", margin: "0 auto" }}>
                 <ToastContainer />
                 <Box padding="20px">
                     <Outlet />

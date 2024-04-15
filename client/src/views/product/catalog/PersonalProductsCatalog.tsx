@@ -13,6 +13,7 @@ const PersonalProductsCatalog: FC<PersonalProductsCatalogProps> = () => {
 
     const [products, setProducts] = useState<IApiProduct[]>([]);
     const [selectedProduct, setSelectedproduct] = useState<IApiProduct | null>(null);
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
         if (!user?.id) {
@@ -20,10 +21,11 @@ const PersonalProductsCatalog: FC<PersonalProductsCatalogProps> = () => {
         }
 
         const controller = new AbortController();
-
+        setLoading(true);
         listPersonalProducts({ signal: controller.signal })
             .then((res) => setProducts(res))
-            .catch(isCancelledErrorProcessor);
+            .catch(isCancelledErrorProcessor)
+            .finally(() => setLoading(false));
 
         return () => controller.abort();
     }, [user]);
@@ -80,6 +82,7 @@ const PersonalProductsCatalog: FC<PersonalProductsCatalogProps> = () => {
                         </Card>
                     </div>
                 ))}
+                {products.length === 0 && !loading && <Typography variant="h6">No products available</Typography>}
             </div>
         </Box>
     );
