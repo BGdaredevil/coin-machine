@@ -38,6 +38,7 @@ import { IItemAutoselect, IMachine } from "../../../utils/commonTypes";
 import EditMachine from "./EditMachine";
 import { MACHINE_KEY } from "../../../config/appConstants";
 import { coinIterationHelper } from "../../home/PurchaseDialog/typesUtils";
+import { isCancelledErrorProcessor } from "../../../services/apiService";
 
 const MyMachines: FC = () => {
     const [params, setParams] = useSearchParams();
@@ -139,9 +140,11 @@ const MyMachines: FC = () => {
     useEffect(() => {
         const controller = new AbortController();
 
-        getMyMachines({ signal: controller.signal }).then((res) => {
-            setOptions(res);
-        });
+        getMyMachines({ signal: controller.signal })
+            .then((res) => {
+                setOptions(res);
+            })
+            .catch(isCancelledErrorProcessor);
 
         return () => controller.abort();
     }, []);
