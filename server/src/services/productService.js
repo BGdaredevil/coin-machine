@@ -37,39 +37,13 @@ const deleteOne = (id) => {
     return ProductModel.findByIdAndDelete(id);
 };
 
-// const join = async (courseId, user) => {
-//     const item = await ProductModel.findById(courseId);
-
-//     item.voteList.push(user.id);
-//     // await userService.enrollInCourse(courseId, user.id);
-//     return item.updateOne({ $set: { voteList: item.voteList } });
-// };
-
-// const search = async (searchObjQ) => {
-//     console.log(searchObjQ);
-//     const searchObj = {};
-
-//     if (searchObjQ.name) {
-//         searchObj.name = new RegExp(searchObjQ.name, "i");
-//     }
-
-//     if (searchObjQ.type) {
-//         searchObj.typeVolcano = new RegExp(searchObjQ.type, "i");
-//     }
-
-//     return ProductModel.find(searchObj).lean();
-// };
-
 const ProductService = {
-    // getAllPublic,
     create,
     getAll,
     getAllByOwner,
     getOne,
     updateOne,
     deleteOne,
-    // join,
-    // search,
     getOneSimple,
     getAllByOwnerNotInMachine,
 };

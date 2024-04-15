@@ -34,31 +34,7 @@ const deleteOne = (id) => {
     return MachineModel.findByIdAndDelete(id);
 };
 
-// const join = async (courseId, user) => {
-//     const item = await MachineModel.findById(courseId);
-
-//     item.voteList.push(user.id);
-//     // await userService.enrollInCourse(courseId, user.id);
-//     return item.updateOne({ $set: { voteList: item.voteList } });
-// };
-
-// const search = async (searchObjQ) => {
-//     console.log(searchObjQ);
-//     const searchObj = {};
-
-//     if (searchObjQ.name) {
-//         searchObj.name = new RegExp(searchObjQ.name, "i");
-//     }
-
-//     if (searchObjQ.type) {
-//         searchObj.typeVolcano = new RegExp(searchObjQ.type, "i");
-//     }
-
-//     return MachineModel.find(searchObj).lean();
-// };
-
 const MachineService = {
-    // getAllPublic,
     create,
     getAll,
     getAllByOwner,
@@ -66,8 +42,6 @@ const MachineService = {
     getOneRaw,
     updateOne,
     deleteOne,
-    // join,
-    // search,
     getOneSimple,
 };
 

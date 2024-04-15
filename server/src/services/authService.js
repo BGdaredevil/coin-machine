@@ -9,13 +9,10 @@ const login = async (user) => {
     if (!item) {
         return null;
     }
+
     const validPass = await item.verifyPass(user.password);
 
-    if (validPass) {
-        return item;
-    } else {
-        return null;
-    }
+    return validPass ? item : null;
 };
 
 const getUser = (id) => {
@@ -24,6 +21,7 @@ const getUser = (id) => {
 
 const checkEmail = async (email) => {
     let temp = await User.findOne({ email }).lean();
+
     return temp != null;
 };
 

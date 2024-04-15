@@ -7,19 +7,19 @@ const auth = async (req, res, next) => {
     if (!token) {
         return next();
     }
+
     try {
         const user = await util.promisify(jwt.verify)(token, secret);
         req.user = user;
         res.locals.user = user;
+
         next();
     } catch (err) {
-        console.log(err);
         res.clearCookie(cookie_name);
         res.status(400).json({
             type: "unauthorized-invalid-token",
             message: "you shall not pass",
         });
-        // res.redirect("/login");
     }
 };
 
@@ -30,6 +30,7 @@ const isAuth = (req, res, next) => {
             message: "you shall not pass as guest",
         });
     }
+
     next();
 };
 
@@ -40,6 +41,7 @@ const isGuest = (req, res, next) => {
             message: "you shall not pass as user",
         });
     }
+
     next();
 };
 

@@ -3,10 +3,6 @@ import mongoose from "mongoose";
 const MachineSchema = new mongoose.Schema(
     {
         name: { type: String, required: true, minlength: [2, "Name is too short"] },
-        owner: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User",
-        },
         oneCCoin: { type: Number, default: 0, max: [50, "Max inventory space is 50 coins"] },
         twoCCoin: { type: Number, default: 0, max: [50, "Max inventory space is 50 coins"] },
         fiveCCoin: { type: Number, default: 0, max: [50, "Max inventory space is 50 coins"] },
@@ -16,6 +12,10 @@ const MachineSchema = new mongoose.Schema(
         oneDCoin: { type: Number, default: 0, max: [50, "Max inventory space is 50 coins"] },
         twoDCoin: { type: Number, default: 0, max: [50, "Max inventory space is 50 coins"] },
         overflow: { type: Number, default: 0 },
+        owner: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+        },
         inventory: [
             {
                 inventoryCount: {

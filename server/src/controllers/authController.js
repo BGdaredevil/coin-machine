@@ -14,16 +14,19 @@ router.post("/register", AuthMiddleware.isGuest, async (req, res) => {
 
     if (Object.values(cleanUser).includes("")) {
         res.status(412).json({ type: "missing data", message: "pls fill all data" });
+
         return;
     }
 
     if (cleanUser.password !== req.body.repeatPassword) {
         res.status(412).json({ type: "pass mismatch", message: "passwords do not math" });
+
         return;
     }
 
     if (await authService.checkEmail(cleanUser.email)) {
         res.status(412).json({ type: "name conflict", message: "name is taken" });
+
         return;
     }
 
@@ -34,7 +37,6 @@ router.post("/register", AuthMiddleware.isGuest, async (req, res) => {
         res.cookie(cookie_name, token, { httpOnly: true });
         res.status(200).json({ email: newUser.email, id: newUser._id, token });
     } catch (err) {
-        console.log(err);
         res.status(412).json({
             type: "validation",
             message: Object.keys(err?.errors)
@@ -45,7 +47,6 @@ router.post("/register", AuthMiddleware.isGuest, async (req, res) => {
 });
 
 router.post("/login", AuthMiddleware.isGuest, async (req, res) => {
-    console.log(req.body);
     const cleanData = {
         email: req.body.email.trim(),
         password: req.body.password.trim(),
@@ -57,9 +58,12 @@ router.post("/login", AuthMiddleware.isGuest, async (req, res) => {
             res.status(412).json({ type: "user", message: "Invalid username or password" });
             return;
         }
+
         const token = await getToken(user);
+
         res.cookie(cookie_name, token, { httpOnly: true });
         res.status(200).json({ email: user.email, id: user._id, token });
+
         return;
     } catch (err) {
         res.status(412).json({
@@ -71,10 +75,9 @@ router.post("/login", AuthMiddleware.isGuest, async (req, res) => {
     }
 });
 
-router.get("/logout", AuthMiddleware.isAuth, (req, res) => {
+router.get("/logout", (req, res) => {
     res.clearCookie(cookie_name);
     res.status(200).json({ type: "message", message: "sucess" });
-    return;
 });
 
 router.get("/:id", AuthMiddleware.isAuth, async (req, res) => {
@@ -89,11 +92,5 @@ router.get("/:id", AuthMiddleware.isAuth, async (req, res) => {
         res.status(412).json({ type: "wrong-data", message: "invalid data" });
     }
 });
-
-// router.get("/:id", (req, res) => {
-//     console.log(req.params.id);
-//     res.write("your profile page is loading");
-//     res.end();
-// });
 
 export default router;

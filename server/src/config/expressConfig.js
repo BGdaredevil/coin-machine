@@ -9,15 +9,11 @@ export default (app) => {
     app.use(cookieParser());
     app.use(
         cors({
-            origin: "http://localhost:5173",
+            origin: process.env.CORS_ORIGIN || "http://localhost:5173",
             methods: ["POST", "PUT", "GET", "OPTIONS", "PATCH", "DELETE"],
             credentials: true,
         })
     );
-    // app.use((req, res, next) => {
-    //     res.header("Access-Control-allow-Credentials", true);
-    //     next();
-    // });
     app.use(AuthMiddleware.auth);
 
     app.use(router);

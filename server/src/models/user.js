@@ -4,20 +4,6 @@ import bcrypt from "bcryptjs";
 import { saltRounds } from "../server.js";
 
 const UserSchema = new mongoose.Schema({
-    // firstName: {
-    //     type: String,
-    //     required: true,
-    //     minlength: [3, "First name is too short"],
-    //     // unique: true,
-    //     validate: [/^[a-z]+$/i, "First name must be only letters. No special characters allowed."],
-    // },
-    // lastName: {
-    //     type: String,
-    //     required: true,
-    //     minlength: [5, "Last name is too short"],
-    //     // unique: true,
-    //     validate: [/^[a-z]+$/i, "Last name must be only letters. No special characters allowed."],
-    // },
     email: {
         type: String,
         required: true,
@@ -34,12 +20,12 @@ const UserSchema = new mongoose.Schema({
         //   "Password must be only letters and numbers. No special characters allowed.",
         // ],
     },
-    // posts: [{ type: mongoose.Schema.Types.ObjectId, ref: "post" }],
 });
 
 UserSchema.pre("save", async function (next) {
-    const salt = await bcrypt.genSalt(saltRounds)
+    const salt = await bcrypt.genSalt(saltRounds);
     this.password = await bcrypt.hash(this.password, salt);
+
     next();
 });
 
