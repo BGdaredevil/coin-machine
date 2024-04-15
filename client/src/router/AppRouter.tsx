@@ -11,15 +11,18 @@ import AuthListener from "./AuthListener";
 import MachineHome from "../views/home/MachineHome";
 import CreateMachine from "../views/machine/create/CreateMachine";
 import MyMachines from "../views/machine/myMachines/MyMachines";
+import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
 
 const router = createBrowserRouter(
     createRoutesFromChildren(
         <Route
             path={PublicRoutes.BASE_PATH}
             element={
-                <AuthListener>
-                    <MainLayout />
-                </AuthListener>
+                <ErrorBoundary>
+                    <AuthListener>
+                        <MainLayout />
+                    </AuthListener>
+                </ErrorBoundary>
             }
         >
             <Route index element={<MachineHome />} />
