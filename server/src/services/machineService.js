@@ -9,7 +9,7 @@ const getAllByOwner = (id) => {
 };
 
 const getAll = () => {
-    return MachineModel.find({}, { sort: { name: 1 } })
+    return MachineModel.find({}, { name: 1 }, { sort: { name: 1 } })
         .select("name")
         .lean();
 };

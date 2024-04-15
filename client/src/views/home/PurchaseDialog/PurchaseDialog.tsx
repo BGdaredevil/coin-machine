@@ -107,7 +107,7 @@ const PurchaseDialog: FC<PurchaseDialogProps> = ({
                 toastSuccess(
                     <>
                         <Typography variant="body1" color="text.secondary" sx={{ color: "inherit" }}>
-                            Thank you for your purchase! Your change is:
+                            {`Thank you for your purchase!${purchaseResult.neededCoins.length ? " Your change is:" : ""}`}
                         </Typography>
                         {purchaseResult.neededCoins.map((e) => (
                             <Typography key={`${e.coin}x${e.count}`} variant="body2" color="text.secondary" sx={{ color: "inherit" }}>

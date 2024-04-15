@@ -382,12 +382,16 @@ const MyMachines: FC = () => {
                                     </TableBody>
                                 </Table>
                             </TableContainer>
-                            <Button variant="outlined" onClick={handleConfirm}>
-                                Confirm Changes
-                            </Button>
-                            <Button variant="outlined" onClick={handleReset}>
-                                Reset
-                            </Button>
+                            {current.inventory.length && (
+                                <Box>
+                                    <Button variant="outlined" onClick={handleConfirm}>
+                                        Confirm Changes
+                                    </Button>
+                                    <Button variant="outlined" onClick={handleReset}>
+                                        Reset
+                                    </Button>
+                                </Box>
+                            )}
                         </Box>
                     ) : null}
                 </>
