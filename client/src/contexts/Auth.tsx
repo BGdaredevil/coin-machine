@@ -1,7 +1,6 @@
 import { FC, PropsWithChildren, createContext, useEffect, useMemo, useState } from "react";
 import { IUserDto } from "../utils/commonTypes";
 import { getUserData, loginUser, registerUser, serverLogout } from "../services/authService";
-import { toastError } from "../utils/toast";
 import cookies from "../utils/cookies";
 import { isCancelledErrorProcessor } from "../services/apiService";
 import { AUTH_COOKIE_KEY, AUTH_COOKIE_TOKEN_KEY } from "../config/appConstants";
