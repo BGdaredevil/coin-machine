@@ -335,7 +335,7 @@ const MyMachines: FC = () => {
                             </Box>
                             <TableContainer component={Paper}>
                                 {current.inventory.length > 0 && (
-                                    <Table aria-label="simple table">
+                                    <Table aria-label="simple table" sx={{tableLayout: 'fixed'}}>
                                         <TableHead>
                                             <TableRow>
                                                 <TableCell>Product</TableCell>
