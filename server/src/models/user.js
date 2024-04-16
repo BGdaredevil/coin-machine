@@ -7,7 +7,7 @@ const UserSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
-        minlength: [5, "email is too short"],
+        minlength: [5, "Email is too short"],
         // unique: true,
         validate: [/^\w+@{1}\w+\.{1}[a-z]{2,3}$/i, "Email must be valid to mailbox@domain.bg/com"],
     },

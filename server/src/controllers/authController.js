@@ -13,19 +13,19 @@ router.post("/register", AuthMiddleware.isGuest, async (req, res) => {
     };
 
     if (Object.values(cleanUser).includes("")) {
-        res.status(412).json({ type: "missing data", message: "pls fill all data" });
+        res.status(412).json({ type: "validation", message: "Please fill all data" });
 
         return;
     }
 
     if (cleanUser.password !== req.body.repeatPassword) {
-        res.status(412).json({ type: "pass mismatch", message: "passwords do not math" });
+        res.status(412).json({ type: "validation", message: "Passwords do not math" });
 
         return;
     }
 
     if (await authService.checkEmail(cleanUser.email)) {
-        res.status(412).json({ type: "name conflict", message: "name is taken" });
+        res.status(412).json({ type: "validation", message: "name is taken" });
 
         return;
     }
@@ -52,10 +52,16 @@ router.post("/login", AuthMiddleware.isGuest, async (req, res) => {
         password: req.body.password.trim(),
     };
 
+    if (Object.values(cleanData).includes("")) {
+        res.status(412).json({ type: "validation", message: "Please fill all data" });
+
+        return;
+    }
+
     try {
         const user = await authService.login(cleanData);
         if (!user) {
-            res.status(412).json({ type: "user", message: "Invalid username or password" });
+            res.status(412).json({ type: "validation", message: "Invalid username or password" });
             return;
         }
 

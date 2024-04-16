@@ -31,35 +31,23 @@ const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
     const [user, setUser] = useState<IUser | null>(null);
 
     const register = async (data: IUserDto): Promise<{ success: boolean }> => {
-        try {
-            const response = await registerUser(data);
+        const response = await registerUser(data);
 
-            setUser({ id: response.id, email: response.email });
-            cookies.set(AUTH_COOKIE_KEY, response.id);
-            cookies.set(AUTH_COOKIE_TOKEN_KEY, response.token);
+        setUser({ id: response.id, email: response.email });
+        cookies.set(AUTH_COOKIE_KEY, response.id);
+        cookies.set(AUTH_COOKIE_TOKEN_KEY, response.token);
 
-            return { success: true };
-        } catch (err: any) {
-            toastError("Sorry something went wrong");
-
-            return { success: false };
-        }
+        return { success: true };
     };
 
     const login = async (data: Omit<IUserDto, "repeatPassword">): Promise<{ success: boolean }> => {
-        try {
-            const response = await loginUser(data);
+        const response = await loginUser(data);
 
-            setUser({ id: response.id, email: response.email });
-            cookies.set(AUTH_COOKIE_KEY, response.id);
-            cookies.set(AUTH_COOKIE_TOKEN_KEY, response.token);
+        setUser({ id: response.id, email: response.email });
+        cookies.set(AUTH_COOKIE_KEY, response.id);
+        cookies.set(AUTH_COOKIE_TOKEN_KEY, response.token);
 
-            return { success: true };
-        } catch (err: any) {
-            toastError("Sorry something went wrong");
-
-            return { success: false };
-        }
+        return { success: true };
     };
 
     const logout = async (): Promise<{ success: boolean }> => {

@@ -6,13 +6,24 @@ export enum Actions {
     REPEAT_PASSWORD = "repeatPassword",
 }
 
+enum ValidateActions {
+    VALIDATE_FIELD = "validateField",
+}
+
 export interface IForm {
     email: IFormField<string>;
     password: IFormField<string>;
     repeatPassword: IFormField<string>;
 }
 
-export interface IAction {
+interface IFormInputAction {
     type: `${Actions}`;
     payload?: string;
 }
+
+interface IFormValidateAction {
+    type: `${ValidateActions}`;
+    payload: keyof IForm;
+}
+
+export type IAction = IFormInputAction | IFormValidateAction;
