@@ -86,7 +86,7 @@ const formReducer = (state: IForm, action: IAction): IForm => {
             }
 
             if (validationMap[action.payload].equals) {
-                stateCopy[action.payload].error = stateCopy[action.payload].value === stateCopy.password.value;
+                stateCopy[action.payload].error = stateCopy[action.payload].value !== stateCopy.password.value;
 
                 if (stateCopy[action.payload].error) {
                     stateCopy[action.payload].errorMessage = validationMap.repeatPassword.equals.errorMessage;
